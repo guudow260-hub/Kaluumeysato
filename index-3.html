@@ -1,0 +1,254 @@
+<!DOCTYPE html><html lang="so"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>* { box-sizing: border-box; }
+
+body { margin: 0px; font-family: Arial, sans-serif; background: rgb(238, 247, 251); color: rgb(17, 34, 51); }
+
+header { background: linear-gradient(135deg, rgb(0, 107, 143), rgb(0, 166, 166)); color: white; padding: 22px 16px; text-align: center; }
+
+header h1 { margin: 0px 0px 7px; font-size: 27px; }
+
+header p { margin: 0px; font-size: 15px; }
+
+nav { display: flex; gap: 7px; overflow: auto; background: white; padding: 9px; position: sticky; top: 0px; z-index: 5; box-shadow: rgba(0, 0, 0, 0.067) 0px 2px 8px; }
+
+nav button { border: 0px; background: rgb(231, 245, 247); padding: 10px 12px; border-radius: 20px; white-space: nowrap; font-weight: bold; color: rgb(7, 92, 112); }
+
+main { max-width: 900px; margin: auto; padding: 14px; }
+
+.card { background: white; border-radius: 18px; padding: 17px; margin: 12px 0px; box-shadow: rgba(0, 0, 0, 0.063) 0px 3px 14px; }
+
+.status { display: flex; align-items: center; gap: 12px; }
+
+.dot { width: 18px; height: 18px; border-radius: 50%; background: rgb(25, 169, 116); }
+
+.big { font-size: 24px; font-weight: 800; }
+
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+.stat { background: rgb(242, 250, 251); padding: 13px; border-radius: 13px; }
+
+.stat b { display: block; font-size: 19px; margin-top: 5px; }
+
+.good { border-left: 6px solid rgb(25, 169, 116); }
+
+.warn { border-left: 6px solid rgb(230, 167, 0); }
+
+button.primary { width: 100%; padding: 14px; border: 0px; border-radius: 13px; background: rgb(8, 127, 140); color: white; font-size: 16px; font-weight: bold; }
+
+.free { background: rgb(255, 245, 217); border: 1px solid rgb(240, 212, 119); }
+
+.ad { background: rgb(255, 255, 255); border: 2px dashed rgb(240, 163, 59); text-align: center; }
+
+.price { font-size: 27px; font-weight: 800; color: rgb(8, 127, 140); }
+
+small { color: rgb(102, 102, 119); }
+
+footer { text-align: center; padding: 25px; color: rgb(102, 102, 119); }
+
+.modal { display: none; position: fixed; inset: 0px; background: rgba(0, 0, 0, 0.533); z-index: 10; align-items: center; justify-content: center; padding: 18px; }
+
+.modalbox { background: white; border-radius: 18px; padding: 20px; max-width: 430px; width: 100%; max-height: 90vh; overflow: auto; }
+
+.success { background: rgb(233, 255, 243); border-left: 5px solid rgb(25, 169, 116); padding: 13px; border-radius: 10px; }
+
+.error { background: rgb(255, 240, 240); border-left: 5px solid rgb(221, 51, 51); padding: 13px; border-radius: 10px; }
+
+input { width: 100%; padding: 13px; margin: 7px 0px; border: 1px solid rgb(204, 223, 229); border-radius: 10px; }
+
+.usdd { background: rgb(16, 24, 32); color: rgb(99, 255, 156); padding: 13px; border-radius: 10px; font-family: monospace; text-align: center; }.bad{border-left:6px solid #dd3333}.dot.w{background:#e6a700}.dot.b{background:#dd3333}</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalluumeysato Soomaaliyeed</title>
+
+</head>
+<body>
+<div style="position:sticky;top:0;z-index:9999;background:#075985;color:#fff;padding:12px 16px;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.2)">💳 Ku bixi Premium EVC Plus: <span style="color:#fde68a;letter-spacing:1px">619235489</span></div>
+
+<header>
+<h1>🌊 Kalluumeysato Soomaaliyeed</h1>
+<p>Ogow xaaladda badda ka hor intaadan badda gelin.</p>
+</header>
+
+<nav>
+<button>🌊 Badda</button>
+<button>🎣 Kalluumeysi</button>
+<button>⚠️ Digniin</button>
+<button>📍 Goobta</button><button>💚 Premium</button>
+</nav>
+
+<main>
+<section id="xaalad" class="card good"><div class="status"><span class="dot" id="dot"></span><div><small>Xaaladda badda</small><div class="big" id="st">Waa la soo raadinayaa…</div></div></div><p id="stp"></p><div class="grid"><div class="stat">🌬️ Dabayl<b id="wind">–</b></div><div class="stat">🌊 Hirar<b id="wave">–</b></div><div class="stat">🌡️ Biyaha<b id="sst">–</b></div><div class="stat">☔ Roob<b id="rain">–</b></div></div></section>
+
+<section id="kalluun" class="card"><h2>🎣 Kalluumeysiga maanta</h2><p><b>Warbixinta otomaatigga ah:</b> waxaa lagu sameeyaa xog dhab ah oo badda ah, Soomaali fudud.</p><div id="kalluunBox"></div></section>
+
+<section id="digniin" class="card"><h2>⚠️ Digniin badeed</h2><p id="digTxt">…</p></section>
+
+<section class="card free">
+<h2>🎁 24 SAAC OO BILAASH AH</h2>
+<p>Isdiiwaangeli oo tijaabi adeegga kalluumeysiga 24 saac adigoon lacag bixin.</p>
+<button class="primary" onclick="openReg()">Isdiiwaangeli bilaash</button>
+</section>
+
+
+<section id="goob" class="card">
+<h2>📍 Dooro goobtaada</h2>
+<p>Dooro xeebta aad ka kalluumeysanayso si warbixinta loogu diyaariyo meeshaas.</p>
+<select id="locationSelect" onchange="setLoc(this.value)" style="width:100%;padding:13px;border:1px solid #ccdfe5;border-radius:10px">
+<optgroup label="🇸🇴 Soomaaliya">
+<option value="Muqdisho">Muqdisho</option>
+<option value="Marka">Marka</option>
+<option value="Baraawe">Baraawe</option>
+<option value="Kismaayo">Kismaayo</option>
+<option value="Jamaame">Jamaame</option>
+<option value="Badhaadhe">Badhaadhe</option>
+<option value="Hobyo">Hobyo</option>
+<option value="Xarardheere">Xarardheere</option>
+<option value="Eyl">Eyl</option>
+<option value="Garacad">Garacad</option>
+<option value="Bandarbeyla">Bandarbeyla</option>
+<option value="Boosaaso">Boosaaso</option>
+<option value="Caluula">Caluula</option>
+<option value="Qandala">Qandala</option>
+<option value="Lasqoray">Lasqoray</option>
+</optgroup>
+<optgroup label="🏴 Somaliland">
+<option value="Berbera">Berbera</option>
+<option value="Saylac">Saylac</option>
+<option value="Lughaya">Lughaya</option>
+<option value="Maydh">Maydh</option>
+<option value="Laasqoray">Laasqoray</option>
+<option value="Xiis">Xiis</option>
+<option value="Ceel Sheekh">Ceel Sheekh</option>
+</optgroup>
+<option value="Goob kale">Goob kale</option>
+</select>
+<div id="locationMessage" class="card good" style="margin-bottom:0"><b>📍 Goobta hadda:</b> Marka<p>Warbixinta hoose waxaa loogu talagalay goobtan.</p></div>
+</section>
+
+<section class="card"><h2>🤖 Kaaliyaha Kalluumeysatada</h2><p><b>Su'aal:</b> “Maanta goormaan badda geli karaa?”</p><div class="card good" id="aiBox"><b>Jawaabta:</b><p id="aiTxt">…</p></div></section>
+
+<section class="card"><h2>📅 Saadaasha 3 maalmood</h2><div class="grid" id="fc"></div></section>
+
+
+<section id="account" class="card">
+<h2>👤 Akoonkayga</h2>
+<div id="accountStatus">Weli ma lihid akoon. Riix “Isdiiwaangeli bilaash” si aad u bilowdo.</div>
+</section>
+<section id="premium" class="card">
+<h2>💚 Premium Kalluumeysato</h2>
+<p>Hel xog faahfaahsan, digniino iyo warbixinno kalluumeysi.</p>
+<div class="price">$1 / bil</div>
+<p><small>Qiimaha waa tusaale prototype; waxaad beddeli kartaa.</small></p>
+<button class="primary" onclick="openEvc()">Ku Bixi EVCPlus</button>
+</section>
+
+<section class="card ad" style="border:2px solid #f0a33b;padding:0;overflow:hidden;text-align:left">
+<div style="background:#fff7e6;padding:6px 14px;font-size:12px;color:#8a5a00;font-weight:bold">📢 XAYEYSIIS</div>
+<div style="padding:16px">
+<h3 style="margin:0 0 6px;font-size:20px;color:#075985">🌊 Saadaasha Hawada Badda iyo Meelaha Kalluunka</h3>
+<p style="margin:0 0 10px"><b>Website-kani</b> wuxuu kuu sheegayaa xaaladda badda, dabaysha iyo hirarka, iyo meelaha kalluunka laga helo, si aad badda ugu gasho ammaan.</p>
+<ul style="margin:0 0 14px;padding-left:20px;line-height:1.7;font-size:15px">
+<li>🌬️ Saadaasha dabaysha, hirarka iyo roobka</li>
+<li>🎣 Waqtiga ugu wanaagsan ee kalluumeysiga</li>
+<li>📍 Meelaha kalluunka laga helo xeebaha Soomaaliya</li>
+<li>⚠️ Digniino badeed oo degdeg ah</li>
+</ul>
+<div style="margin:14px 0 8px;padding:10px;background:#eef7fb;border-radius:10px;text-align:center;font-size:15px"><b>Wixii caawinaad ah, riix badhanka hoose si aad u wacdo</b></div>
+<a id="callBtn" href="tel:619235489" style="display:block;padding:14px;border-radius:13px;background:#087f8c;color:#fff;font-size:16px;font-weight:bold;text-align:center;text-decoration:none">📞 Wac Hadda</a>
+</div>
+</section>
+</main>
+
+<footer>
+Kalluumeysato Soomaaliyeed © 2026<br>
+<small>Xogta: Open-Meteo (saadaal, ma aha xaqiijin rasmi ah). Go'aanka badda gelitaanka adiguna qaado, had iyo jeer iska hubi xaaladda.</small>
+</footer>
+
+<div id="modal" class="modal">
+<div class="modalbox">
+<h2 id="mtitle">Isdiiwaangeli</h2>
+<div id="mcontent"></div>
+<button class="primary" style="margin-top:10px" onclick="closeM()">Xir</button>
+</div>
+</div>
+
+
+
+<script>
+const MERCHANT='619235489';
+const $=id=>document.getElementById(id);
+function openM(t,c){$('mtitle').innerHTML=t;$('mcontent').innerHTML=c;$('modal').style.display='flex'}
+function closeM(){$('modal').style.display='none'}
+function setLoc(v){$('locationMessage').innerHTML='<b>📍 Goobta hadda:</b> '+v+'<p>Warbixinta hoose waxaa loogu talagalay goobtan.</p>'}
+function openReg(){openM('Isdiiwaangeli','<input id="rname" placeholder="Magacaaga"><input id="rphone" type="tel" placeholder="Lambarkaaga"><button class="primary" onclick="doReg()">Bilow 24 saac bilaash</button>')}
+function doReg(){const n=$('rname').value.trim();if(!n)return;$('accountStatus').textContent='✅ Akoon: '+n+' (24 saac bilaash)';closeM()}
+function cleanNum(v){return v.replace(/\D/g,'').replace(/^252/,'')}
+function openEvc(){
+ // Lambarka waxaa si automatic ah loogu qoraa goobta kore marka EVCPlus la riixo
+ openM('💚 Ku Bixi EVCPlus','<p>Lacagta Premium: <b>$1 / bil</b></p>'+
+ '<input id="evcNum" type="tel" inputmode="numeric" value="'+MERCHANT+'" oninput="upd()">'+
+ '<div class="usdd" id="ussd"></div>'+
+ '<a id="dialBtn" href="#" onclick="return dial(event)" style="display:block;margin-top:10px;padding:14px;border-radius:13px;background:#087f8c;color:#fff;font-size:16px;font-weight:bold;text-align:center;text-decoration:none">📱 Fur EVCPlus / USSD</a>'+
+ '<div id="evcErr"></div>');
+ upd();
+}
+function ussdCode(n){return '*712*'+n+'*1#'}
+function upd(){
+ const n=cleanNum($('evcNum').value);
+ $('ussd').textContent=ussdCode(n||'NUMBER');
+ // tel: link — # waa %23 iyo * waa %2A si keyboard-ka telefoonku u aqbalo
+ $('dialBtn').href='tel:'+ussdCode(n).replace(/\*/g,'%2A').replace(/#/g,'%23');
+}
+function dial(e){
+ const n=cleanNum($('evcNum').value);
+ if(!/^\d{9}$/.test(n)){
+  $('evcErr').innerHTML='<div class="error" style="margin-top:10px">Fadlan geli lambarka EVCPlus si sax ah.</div>';
+  return false;
+ }
+ $('evcErr').innerHTML='';
+ try{navigator.clipboard.writeText(ussdCode(n))}catch(x){}
+ // haddii keyboard-ku furmin, koodhka gacanta ku qor
+ setTimeout(()=>{$('evcErr').innerHTML='<div class="success" style="margin-top:10px">Haddii keyboard-ku furmin, ku qor gacanta: <b>'+ussdCode(n)+'</b></div>'},1500);
+ return true; // ha ka hortagin link-ga tel:
+}
+</script>
+<script>
+const LOC={Muqdisho:[2.0,45.5],Marka:[1.6,44.9],Baraawe:[1.0,44.2],Kismaayo:[-0.45,42.7],Jamaame:[0.05,43.2],Badhaadhe:[-1.2,41.5],Hobyo:[5.35,48.8],Xarardheere:[4.6,48.2],Eyl:[8.0,50.1],Garacad:[6.5,49.7],Bandarbeyla:[9.5,51.1],Boosaaso:[11.5,49.2],Caluula:[12.1,51.0],Qandala:[11.65,49.9],Lasqoray:[11.35,48.3],Berbera:[10.6,45.0],Saylac:[11.5,43.5],Lughaya:[10.9,43.9],Maydh:[11.2,47.1],Laasqoray:[11.35,48.3],Xiis:[11.2,47.25],'Ceel Sheekh':[11.1,46.5],'Goob kale':[1.6,44.9]};
+const LV={good:['WANAAGSAN','🟢'],warn:['TAXADDAR','🟡'],bad:['KHATAR','🔴']};
+const lvl=(w,v,r)=>(w==null||v==null)?'na':(w>=2||v>=35)?'bad':(w>=1.2||v>=25||(r||0)>=60)?'warn':'good';
+const hh=t=>t.slice(11,16);
+function window_(H,idx){let best=[],cur=[];for(const i of idx){const h=+H.t[i].slice(11,13);if(h>=5&&h<=17&&lvl(H.w[i],H.v[i],H.r[i])==='good')cur.push(i);else{if(cur.length>best.length)best=cur;cur=[]}}if(cur.length>best.length)best=cur;return best.length?hh(H.t[best[0]])+'–'+(('0'+(+H.t[best[best.length-1]].slice(11,13)+1)).slice(-2))+':00':null}
+function setLoc(name){
+ $('locationMessage').innerHTML='<b>📍 Goobta hadda:</b> '+name+'<p>Warbixinta hoose waxaa loogu talagalay goobtan.</p>';
+ load(name);
+}
+async function load(name){
+ const [la,lo]=LOC[name]||LOC.Marka;
+ $('st').textContent='Waa la soo raadinayaa…';
+ try{
+  const q='latitude='+la+'&longitude='+lo+'&timezone=auto&forecast_days=3';
+  const [m,f]=await Promise.all([
+   fetch('https://marine-api.open-meteo.com/v1/marine?'+q+'&hourly=wave_height,sea_surface_temperature').then(r=>r.json()),
+   fetch('https://api.open-meteo.com/v1/forecast?'+q+'&current=wind_speed_10m,wind_gusts_10m&hourly=wind_speed_10m,wind_gusts_10m,precipitation_probability').then(r=>r.json())]);
+  const H={t:f.hourly.time,w:m.hourly.wave_height,v:f.hourly.wind_speed_10m,g:f.hourly.wind_gusts_10m,r:f.hourly.precipitation_probability,s:m.hourly.sea_surface_temperature};
+  let n=H.t.indexOf(f.current.time.slice(0,13)+':00');if(n<0)n=0;
+  const w=H.w[n],v=f.current.wind_speed_10m,g=f.current.wind_gusts_10m,r=H.r[n],s=H.s[n];
+  if(w==null)throw new Error('no marine data');
+  const L=lvl(w,v,r),[lab,em]=LV[L];
+  $('xaalad').className='card '+L;$('dot').className='dot '+(L==='warn'?'w':L==='bad'?'b':'');
+  $('st').textContent=lab;
+  $('wind').textContent=Math.round(v)+' km/saac';$('wave').textContent=w.toFixed(1)+' mitir';
+  $('sst').textContent=s!=null?Math.round(s)+'°C':'–';$('rain').textContent=(r??'–')+'%';
+  const days=[...new Set(H.t.map(x=>x.slice(0,10)))];
+  const wins=days.map(d=>window_(H,H.t.map((x,i)=>x.startsWith(d)?i:-1).filter(i=>i>=0)));
+  const msg={good:'Xaaladda badda guud ahaan waa deggan tahay. Si kastaba ha ahaato, hubi goobtaada ka hor intaadan baxin.',warn:'Taxaddar: dabayl ama hirar ayaa dhexdhexaad ah. Ha fogaanin xeebta, la soco cimilada.',bad:'Khatar: dabayl ama hirar kuwo xoog leh ayaa jira. Maanta badda ha gelin.'}[L];
+  $('stp').textContent=msg;
+  $('kalluunBox').innerHTML=wins[0]?'<div class="card good"><b>🟢 Waqti ku habboon</b><p>'+wins[0]+'</p></div>'+(L!=='good'?'<div class="card warn"><b>🟡 Taxaddar</b><p>Hadda xaaladdu waa '+lab+'; waqtigaas ayaa ugu wanaagsan maanta.</p></div>':''):'<div class="card bad"><b>🔴 Waqti ku habboon ma jiro</b><p>Maanta dabayl/hirar ayaa badan, kalluumeysi ha u bixin.</p></div>';
+  $('digTxt').textContent=L==='bad'?'🔴 Digniin: dabaysha '+Math.round(g)+' km/saac ayay gaadhi kartaa, hirarkuna '+w.toFixed(1)+' mitir. Badda ha gelin.':g>=40?'🟡 Dabayl xoog leh (ilaa '+Math.round(g)+' km/saac). Taxaddar.':'Hadda digniin culus lama muujinayo.';
+  $('aiTxt').textContent=wins[0]?'Maanta waqtiga ugu wanaagsan waa '+wins[0]+'. Dabaysha '+Math.round(v)+' km/saac, hirarka '+w.toFixed(1)+' mitir, roobka '+(r??0)+'%. Xaaladda: '+lab+'.':'Maanta waqti ammaan ah oo badda lagu geli karo ma jiro: dabaysha '+Math.round(v)+' km/saac, hirarka '+w.toFixed(1)+' mitir.';
+  const nm=['Maanta','Berri','Ka dib'];
+  $('fc').innerHTML=days.map((d,i)=>{const ix=H.t.map((x,k)=>x.startsWith(d)?k:-1).filter(k=>k>=0&&+H.t[k].slice(11,13)>=5&&+H.t[k].slice(11,13)<=17);const L2=wins[i]?(ix.every(k=>lvl(H.w[k],H.v[k],H.r[k])==='good')?'good':'warn'):'bad';return '<div class="stat"><b>'+nm[i]+'</b>'+LV[L2][1]+' '+LV[L2][0]+'<br><small>'+(wins[i]||'Ha geli')+'</small></div>'}).join('');
+ }catch(e){$('st').textContent='Xog lama helin';$('stp').textContent='Xogta badda lama helin. Hubi internet-ka ama dooro goob kale.';$('aiTxt').textContent='Xogta lama helin.'}
+}
+load('Marka');
+</script>
+</body></html>
