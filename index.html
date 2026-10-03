@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#055a73">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kalluumeysato">
 <title>Kalluumeysato Soomaaliyeed</title>
 <style>
 :root{--bg:#eaf4f8;--ink:#10252e;--mut:#5d7480;--card:#fff;--pri:#087f8c;--pri2:#055a73;--ok:#19a974;--wa:#e6a700;--bad:#d9362f;--line:#d5e5ec}
@@ -77,6 +83,9 @@ input{width:100%;padding:14px;margin:6px 0;border:1px solid var(--line);border-r
 .modal{display:none;position:fixed;inset:0;background:#000a;z-index:10;align-items:center;justify-content:center;padding:18px}
 .modalbox{background:#fff;border-radius:18px;padding:20px;max-width:430px;width:100%;max-height:90vh;overflow:auto}
 .skel{animation:p 1.2s infinite}@keyframes p{50%{opacity:.4}}
+.install{display:none;background:linear-gradient(135deg,#e8f7f8,#d3f0f2);border:2px solid var(--pri)}
+.install .row2{display:flex;gap:12px;align-items:center}
+.install img{width:56px;height:56px;border-radius:14px}
 footer{text-align:center;padding:26px 14px;color:var(--mut);font-size:13px}
 </style>
 </head>
@@ -96,6 +105,12 @@ footer{text-align:center;padding:26px 14px;color:var(--mut);font-size:13px}
 </nav>
 
 <main>
+
+<section id="install" class="card install">
+  <div class="row2"><img src="icon-192.png" alt=""><div><b>📲 Ku dar shaashadda telefoonkaaga</b><div class="mut" style="font-size:13px">Si aad u furto mar kasta adigoon link raadin.</div></div></div>
+  <button class="primary" style="margin-top:12px" onclick="doInstall()">Ku dar shaashadda hore</button>
+  <div id="installHelp" class="wr" style="display:none">Riix <b>⋮</b> (kore midig ee Chrome), kadibna dooro <b>Add to Home screen</b> ama <b>Install app</b>.<br><small>iPhone (Safari): riix <b>Share</b> kadibna <b>Add to Home Screen</b>.</small></div>
+</section>
 
 <section id="goob" class="card">
   <h2>📍 Dooro goobtaada</h2>
@@ -463,6 +478,19 @@ function openUSSD(code){
   location.href='tel:'+code.replace(/#/g,'%23');
 }
 function closeModal(){$('modal').style.display='none'}
+
+/* ---------- Ku dar shaashadda (PWA) ---------- */
+let deferredInstall=null;
+const isStandalone=(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;showInstall()});
+window.addEventListener('appinstalled',()=>{$('install').style.display='none';deferredInstall=null});
+function showInstall(){if(isStandalone)return;$('install').style.display='block'}
+async function doInstall(){
+  if(deferredInstall){deferredInstall.prompt();try{await deferredInstall.userChoice}catch(e){}deferredInstall=null;$('install').style.display='none'}
+  else{$('installHelp').style.display='block'}
+}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+window.addEventListener('load',()=>{if(!isStandalone)setTimeout(showInstall,2500)});
 
 /* ---------- Bilow ---------- */
 window.addEventListener('load',()=>{
