@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin — Kalluumeysato</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#eaf4f8;--ink:#10252e;--mut:#5d7480;--pri:#087f8c;--pri2:#055a73;--line:#d5e5ec}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(160deg,#055a73,#0aa0a0);color:#fff;padding:16px;display:flex;align-items:center;gap:10px}
+header h1{margin:0;font-size:19px;flex:1}
+header button{background:#fff2;color:#fff;border:1px solid #fff6;border-radius:10px;padding:8px 12px;font-weight:700}
+main{max-width:980px;margin:auto;padding:12px}
+.card{background:#fff;border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 3px 14px #0a2a3a14}
+h2{margin:0 0 10px;font-size:17px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
+.stat{background:#f1f9fb;border-radius:14px;padding:13px}
+.stat span{font-size:12px;color:var(--mut)}
+.stat b{display:block;font-size:26px;margin-top:2px}
+input{width:100%;padding:13px;margin:6px 0;border:1px solid var(--line);border-radius:10px;font-size:16px}
+button.p{padding:13px 16px;border:0;border-radius:12px;background:var(--pri);color:#fff;font-weight:800;font-size:15px;cursor:pointer}
+button.g{padding:10px 14px;border:1px solid var(--pri);background:#fff;color:var(--pri2);border-radius:10px;font-weight:700;cursor:pointer}
+.tw{overflow:auto;max-height:420px;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:9px 10px;text-align:left;white-space:nowrap;border-bottom:1px solid #eef3f6}
+th{position:sticky;top:0;background:#f1f9fb;font-size:12px;color:var(--mut)}
+.tag{padding:3px 9px;border-radius:12px;font-size:12px;font-weight:800}
+.t-visit{background:#e8f0ff;color:#2c4fa8}.t-register{background:#e4f7ee;color:#0b7a52}
+.t-pay_click{background:#fff3d1;color:#8a6200}.t-location{background:#f0f0f0;color:#555}
+.t-install{background:#e0f7fa;color:#006978}.t-app_open{background:#ede7f6;color:#4527a0}
+.on{color:#0b7a52;font-weight:800}.off{color:#a3231d;font-weight:800}
+.bar{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:14px}
+.bar i{display:block;height:10px;border-radius:5px;background:var(--pri)}
+.er{background:#fff0f0;border-left:5px solid #d33;padding:12px;border-radius:10px;margin-top:8px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#login{max-width:380px;margin:50px auto}
+</style>
+</head>
+<body>
+<header>
+  <h1>🛠️ Admin — Kalluumeysato</h1>
+  <button id="refresh" style="display:none" onclick="load()">🔄</button>
+  <button id="logout" style="display:none" onclick="logout()">Ka bax</button>
+</header>
+<main>
+
+<div id="login" class="card">
+  <h2>🔐 Gal Admin</h2>
+  <input id="em" type="email" placeholder="Email" autocomplete="username">
+  <input id="pw" type="password" placeholder="Password" autocomplete="current-password">
+  <button class="p" style="width:100%" onclick="login()">Gal</button>
+  <div id="lerr"></div>
+</div>
+
+<div id="app" style="display:none">
+
+  <div class="card"><h2>📊 Guud ahaan</h2><div class="grid" id="stats"></div></div>
+
+  <div class="card">
+    <div class="row"><h2 style="margin:0;flex:1">👥 Isticmaalayaasha la diiwaangeliyay</h2><button class="g" onclick="csv()">⬇️ CSV</button></div>
+    <input id="q" placeholder="Raadi magac ama lambar…" oninput="renderUsers()">
+    <div class="tw"><table id="users"></table></div>
+  </div>
+
+  <div class="card"><h2>📍 Goobaha ugu badan (booqdayaasha)</h2><div id="places"></div></div>
+
+  <div class="card">
+    <h2>🕐 Dhaqdhaqaaqii u dambeeyay</h2>
+    <div class="tw"><table id="events"></table></div>
+  </div>
+
+</div>
+</main>
+
+<script>
+/* Halkan geli isla furayaashii index.html */
+const SB_URL='https://gulppywsmtbkktqnxljf.supabase.co';
+const SB_KEY='sb_publishable_6Xa-Vpj18F1HHF1muLLw9A_d4HVgWpO';
+const db=supabase.createClient(SB_URL,SB_KEY);
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let U=[],E=[];
+
+async function login(){
+  $('lerr').innerHTML='';
+  const {error}=await db.auth.signInWithPassword({email:$('em').value.trim(),password:$('pw').value});
+  if(error){$('lerr').innerHTML='<div class="er">Email ama password waa khalad.</div>';return}
+  start();
+}
+async function logout(){await db.auth.signOut();location.reload()}
+async function start(){
+  $('login').style.display='none';$('app').style.display='block';
+  $('refresh').style.display='';$('logout').style.display='';
+  load();
+}
+async function load(){
+  const [u,e]=await Promise.all([
+    db.from('users').select('*').order('started_at',{ascending:false}).limit(5000),
+    db.from('events').select('*').order('created_at',{ascending:false}).limit(5000)
+  ]);
+  if(u.error||e.error){alert('Xogta lama helin: '+(u.error||e.error).message);return}
+  U=u.data;E=e.data;render();
+}
+function daysLeft(s){const x=new Date(s);x.setMonth(x.getMonth()+3);return Math.ceil((x-Date.now())/86400000)}
+function fmt(d){return new Date(d).toLocaleString('so',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}
+function render(){
+  const t0=new Date();t0.setHours(0,0,0,0);
+  const today=E.filter(x=>x.type==='visit'&&new Date(x.created_at)>=t0);
+  const uniqToday=new Set(today.map(x=>x.visitor_id)).size;
+  const uniqAll=new Set(E.filter(x=>x.type==='visit').map(x=>x.visitor_id)).size;
+  const newToday=U.filter(x=>new Date(x.started_at)>=t0).length;
+  const active=U.filter(x=>daysLeft(x.started_at)>0).length;
+  const pays=E.filter(x=>x.type==='pay_click').length;
+  // App-ka (dejiyey = install ama app_open; qof walba hal mar la tiriyo)
+  const inst=new Set(E.filter(x=>x.type==='install'||x.type==='app_open').map(x=>x.visitor_id));
+  const instToday=new Set(E.filter(x=>x.type==='install'&&new Date(x.created_at)>=t0).map(x=>x.visitor_id)).size;
+  const openToday=new Set(E.filter(x=>x.type==='app_open'&&new Date(x.created_at)>=t0).map(x=>x.visitor_id)).size;
+  const S=[['📲 App-ka dejiyey (wadar)',inst.size],['📲 Dejiyey maanta',instToday],['📱 App-ka ka furay maanta',openToday],['Dad gaar ah wadar',uniqAll],
+    ['Booqasho maanta',today.length],['Dad gaar ah maanta',uniqToday],['Isdiiwaangelin wadar',U.length],['Isdiiwaangelin maanta',newToday],
+    ['Bilaashka wali socda',active],['Bilaashku dhammaaday',U.length-active],['Riix Premium/EVC',pays]];
+  $('stats').innerHTML=S.map(s=>'<div class="stat"><span>'+s[0]+'</span><b>'+s[1]+'</b></div>').join('');
+  renderUsers();
+  // goobaha
+  const c={};E.filter(x=>x.type==='visit'||x.type==='location').forEach(x=>{if(x.place)c[x.place]=(c[x.place]||0)+1});
+  const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,8),mx=top.length?top[0][1]:1;
+  $('places').innerHTML=top.length?top.map(([k,v])=>'<div class="bar"><span style="width:110px">'+esc(k)+'</span><i style="width:'+Math.max(6,v/mx*60)+'%"></i><b>'+v+'</b></div>').join(''):'<small>Weli xog ma jirto.</small>';
+  // dhacdooyinka
+  const N={visit:'Booqasho',register:'Isdiiwaangelin',pay_click:'Riixay EVC',location:'Beddelay goob',install:'Dejiyey app',app_open:'Ka furay app'};
+  $('events').innerHTML='<tr><th>Waqti</th><th>Nooc</th><th>Goob</th><th>Doon</th><th>Lambar</th><th>Qalab</th></tr>'+
+    E.slice(0,150).map(x=>'<tr><td>'+fmt(x.created_at)+'</td><td><span class="tag t-'+esc(x.type)+'">'+esc(N[x.type]||x.type)+'</span></td><td>'+esc(x.place)+'</td><td>'+esc(x.boat)+'</td><td>'+esc(x.phone)+'</td><td>'+esc(device(x.ua))+'</td></tr>').join('');
+}
+function device(ua){ua=ua||'';return /Android/i.test(ua)?'Android':/iPhone|iPad/i.test(ua)?'iPhone':/Windows/i.test(ua)?'Windows':/Mac/i.test(ua)?'Mac':'—'}
+function renderUsers(){
+  const q=$('q').value.trim().toLowerCase();
+  const paid=new Set(E.filter(x=>x.type==='pay_click'&&x.phone).map(x=>x.phone));
+  const rows=U.filter(u=>!q||u.name.toLowerCase().includes(q)||u.phone.includes(q));
+  $('users').innerHTML='<tr><th>Magac</th><th>Lambar</th><th>Bilaabay</th><th>Hadhay</th><th>EVC</th></tr>'+
+    rows.map(u=>{const d=daysLeft(u.started_at);
+      return '<tr><td>'+esc(u.name)+'</td><td><a href="tel:+252'+esc(u.phone)+'">'+esc(u.phone)+'</a></td><td>'+fmt(u.started_at)+'</td><td class="'+(d>0?'on':'off')+'">'+(d>0?d+' maalin':'Dhammaaday')+'</td><td>'+(paid.has(u.phone)?'💚 Riixay':'—')+'</td></tr>'}).join('');
+}
+function csv(){
+  const l=[['Magac','Lambar','Bilaabay','Maalmo hadhay']].concat(U.map(u=>[u.name,u.phone,u.started_at,Math.max(0,daysLeft(u.started_at))]));
+  const t=l.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+t],{type:'text/csv'}));a.download='isticmaalayaasha.csv';a.click();
+}
+db.auth.getSession().then(({data})=>{if(data.session)start()});
+</script>
+</body>
+</html>

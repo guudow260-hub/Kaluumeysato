@@ -500,19 +500,27 @@ function closeModal(){$('modal').style.display='none'}
 let deferredInstall=null;
 const isStandalone=(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;showInstall()});
-window.addEventListener('appinstalled',()=>{$('install').style.display='none';deferredInstall=null});
+window.addEventListener('appinstalled',()=>{$('install').style.display='none';deferredInstall=null;track('install')});
 function showInstall(){if(isStandalone)return;$('install').style.display='block'}
 async function doInstall(){
   if(deferredInstall){deferredInstall.prompt();try{await deferredInstall.userChoice}catch(e){}deferredInstall=null;$('install').style.display='none'}
   else{$('installHelp').style.display='block'}
 }
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+if('serviceWorker' in navigator){
+  const hadSW=!!navigator.serviceWorker.controller;
+  let reloaded=false;
+  /* Marka nooc cusub la helo, bogga hal mar dib u soo rar */
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(hadSW&&!reloaded){reloaded=true;location.reload()}});
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').then(r=>r.update()).catch(()=>{}));
+}
 window.addEventListener('load',()=>{if(!isStandalone)setTimeout(showInstall,2500)});
 
 /* ---------- Bilow ---------- */
 window.addEventListener('load',()=>{
   const v=safeGet('k_goob'); if(v&&LOC[v])$('locationSelect').value=v;
   renderBoats(); loadAccount(); loadData(); track('visit');
+  /* App-ka laga furay shaashadda guriga (installed) */
+  if(isStandalone)track('app_open');
 });
 </script>
 </body>
