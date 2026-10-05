@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#055a73">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kalluumeysato">
+<title>Kalluumeysato Soomaaliyeed</title>
+<style>
+:root{--bg:#eaf4f8;--ink:#10252e;--mut:#5d7480;--card:#fff;--pri:#087f8c;--pri2:#055a73;--ok:#19a974;--wa:#e6a700;--bad:#d9362f;--line:#d5e5ec}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{background:linear-gradient(160deg,#055a73,#0aa0a0);color:#fff;padding:26px 16px 54px;text-align:center;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:34px;background:var(--bg);border-radius:50% 50% 0 0/100% 100% 0 0}
+header h1{margin:0 0 6px;font-size:26px}
+header p{margin:0;opacity:.92;font-size:15px}
+nav{display:flex;gap:7px;overflow:auto;background:#fff;padding:9px 10px;position:sticky;top:0;z-index:5;box-shadow:0 2px 10px #0002;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{border:0;background:#e5f4f6;padding:10px 14px;border-radius:20px;white-space:nowrap;font-weight:700;color:var(--pri2);font-size:14px;cursor:pointer}
+nav button:active{background:#cdeaee}
+main{max-width:860px;margin:-26px auto 0;padding:0 14px 14px;position:relative;z-index:2}
+.card{background:var(--card);border-radius:18px;padding:18px;margin:14px 0;box-shadow:0 4px 16px #0a2a3a14}
+h2{margin:0 0 10px;font-size:19px}
+small,.mut{color:var(--mut)}
+select{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;font-size:16px;background:#fff;color:var(--ink)}
+.loc-row{display:flex;gap:8px;align-items:center;margin-top:8px}
+.loc-row button{flex:0 0 auto}
+/* hero status */
+.hero{border-left:8px solid var(--ok);transition:border-color .3s}
+.hero.warn{border-color:var(--wa)}.hero.bad{border-color:var(--bad)}
+.hero .row{display:flex;align-items:center;gap:14px}
+.badge{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;font-size:30px;background:#e4f7ee;flex:0 0 auto}
+.hero.warn .badge{background:#fff3d1}.hero.bad .badge{background:#fde4e2}
+.big{font-size:26px;font-weight:900;letter-spacing:.3px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+@media(min-width:620px){.grid.g4{grid-template-columns:repeat(4,1fr)}}
+.stat{background:#f1f9fb;padding:13px;border-radius:14px}
+.stat span{font-size:13px;color:var(--mut)}
+.stat b{display:block;font-size:20px;margin-top:3px}
+.msg{margin-top:14px;padding:13px;border-radius:12px;background:#f1f9fb}
+/* boats */
+.boats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.boat{border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.boat b{display:block}
+.boat.on{border-color:var(--pri);background:#e8f7f8}
+/* windows */
+.win{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:#eefaf4;border-left:5px solid var(--ok);margin-top:10px}
+.win.warn{background:#fff8e3;border-color:var(--wa)}.win.bad{background:#fdeeed;border-color:var(--bad)}
+.win .t{font-weight:800}
+/* chart */
+.hours{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:10px}
+.hr{border-radius:12px;padding:10px 6px;text-align:center;background:#eefaf4;border:2px solid var(--ok)}
+.hr.warn{background:#fff8e3;border-color:var(--wa)}
+.hr.bad{background:#fdeeed;border-color:var(--bad)}
+.hr .tm{font-weight:900;font-size:16px}
+.hr .ic{font-size:24px;line-height:1.3}
+.hr .lb{font-size:12px;font-weight:800}
+.hr .dt{font-size:11px;color:var(--mut);margin-top:2px}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:13px;font-weight:700}
+.legend span{padding:5px 10px;border-radius:20px}
+.legend .l0{background:#e4f7ee;color:#0b7a52}.legend .l1{background:#fff3d1;color:#8a6200}.legend .l2{background:#fde4e2;color:#a3231d}
+/* days */
+.day{background:#f1f9fb;border-radius:14px;padding:13px}
+.day .d{font-weight:800}
+/* buttons / forms */
+button.primary{width:100%;padding:15px;border:0;border-radius:13px;background:var(--pri);color:#fff;font-size:16px;font-weight:800;cursor:pointer}
+button.primary:active{background:var(--pri2)}
+button.ghost{padding:12px 14px;border:1px solid var(--pri);background:#fff;color:var(--pri2);border-radius:12px;font-weight:700;cursor:pointer}
+input{width:100%;padding:14px;margin:6px 0;border:1px solid var(--line);border-radius:12px;font-size:16px}
+.free{background:linear-gradient(135deg,#fff7de,#ffefb8);border:1px solid #f0d477}
+.price{font-size:30px;font-weight:900;color:var(--pri)}
+.ad{border:2px dashed #f0a33b;text-align:center}
+.ok{background:#e9fff3;border-left:5px solid var(--ok);padding:13px;border-radius:10px;margin-top:10px}
+.wr{background:#fff8e3;border-left:5px solid var(--wa);padding:13px;border-radius:10px;margin-top:10px}
+.er{background:#fff0f0;border-left:5px solid var(--bad);padding:13px;border-radius:10px;margin-top:10px}
+.ussd{background:#101820;color:#63ff9c;padding:13px;border-radius:10px;font-family:monospace;text-align:center;margin:8px 0}
+.modal{display:none;position:fixed;inset:0;background:#000a;z-index:10;align-items:center;justify-content:center;padding:18px}
+.modalbox{background:#fff;border-radius:18px;padding:20px;max-width:430px;width:100%;max-height:90vh;overflow:auto}
+.skel{animation:p 1.2s infinite}@keyframes p{50%{opacity:.4}}
+.install{display:none;background:linear-gradient(135deg,#e8f7f8,#d3f0f2);border:2px solid var(--pri)}
+.install .row2{display:flex;gap:12px;align-items:center}
+.install img{width:56px;height:56px;border-radius:14px}
+footer{text-align:center;padding:26px 14px;color:var(--mut);font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌊 Kalluumeysato Soomaaliyeed</h1>
+  <p>Ogow xaaladda badda ka hor intaadan badda gelin.</p>
+</header>
+
+<nav>
+  <button onclick="go('xaalad')">🌊 Xaaladda</button>
+  <button onclick="go('waqtiyo')">⏱️ Waqtiyada</button>
+  <button onclick="go('saadaal')">📅 Saadaasha</button>
+  <button onclick="go('goob')">📍 Goobta</button>
+  <button onclick="go('akoon')">👤 Akoon</button>
+  <button id="navPremium" onclick="go('premium')">💚 Premium</button>
+</nav>
+
+<main>
+
+<section id="install" class="card install">
+  <div class="row2"><img src="icon-192.png" alt=""><div><b>📲 Ku dar shaashadda telefoonkaaga</b><div class="mut" style="font-size:13px">Si aad u furto mar kasta adigoon link raadin.</div></div></div>
+  <button class="primary" style="margin-top:12px" onclick="doInstall()">Ku dar shaashadda hore</button>
+  <div id="installHelp" class="wr" style="display:none">Riix <b>⋮</b> (kore midig ee Chrome), kadibna dooro <b>Add to Home screen</b> ama <b>Install app</b>.<br><small>iPhone (Safari): riix <b>Share</b> kadibna <b>Add to Home Screen</b>.</small></div>
+</section>
+
+<section id="goob" class="card">
+  <h2>📍 Dooro goobtaada</h2>
+  <select id="locationSelect" onchange="changeLocation()">
+    <optgroup label="🇸🇴 Soomaaliya">
+      <option>Muqdisho</option><option>Afgooye</option><option selected>Marka</option><option>Baraawe</option>
+      <option>Kismaayo</option><option>Jamaame</option><option>Badhaadhe</option><option>Hobyo</option>
+      <option>Xarardheere</option><option>Eyl</option><option>Garacad</option><option>Bandarbeyla</option>
+      <option>Qardho</option><option>Boosaaso</option><option>Caluula</option><option>Qandala</option><option>Lasqoray</option>
+    </optgroup>
+    <optgroup label="🏴 Somaliland">
+      <option>Hargeysa</option><option>Berbera</option><option>Saylac</option><option>Lughaya</option>
+      <option>Maydh</option><option>Laasqoray</option><option>Xiis</option><option>Ceel Sheekh</option>
+    </optgroup>
+  </select>
+  <div class="loc-row"><small id="updated">—</small><span style="flex:1"></span><button class="ghost" onclick="loadData(true)">🔄 Cusboonaysii</button></div>
+</section>
+
+<section class="card">
+  <h2>🚤 Nooca doontaada</h2>
+  <div class="boats" id="boats"></div>
+  <p class="mut" style="margin:10px 0 0;font-size:13px">Digniintu waxay ku xiran tahay nooca doonta: doon yar ayaa hirar yar xitaa halis ku ah.</p>
+</section>
+
+<section id="xaalad" class="card hero skel">
+  <div class="row">
+    <div class="badge" id="hBadge">⏳</div>
+    <div><small>Xaaladda badda hadda — <span id="hPlace">Marka</span></small><div class="big" id="hTitle">Waa la soo rarayaa…</div></div>
+  </div>
+  <div class="grid g4">
+    <div class="stat"><span>🌬️ Dabayl</span><b id="sWind">—</b></div>
+    <div class="stat"><span>🌊 Hirar</span><b id="sWave">—</b></div>
+    <div class="stat"><span>🌡️ Biyaha</span><b id="sTemp">—</b></div>
+    <div class="stat"><span>☔ Roob</span><b id="sRain">—</b></div>
+  </div>
+  <div class="msg" id="hMsg">Xogta badda ayaa la helayaa…</div>
+</section>
+
+<section id="waqtiyo" class="card">
+  <h2>⏱️ Waqtiyada ugu fiican maanta</h2>
+  <div id="windows"><small>Waa la soo rarayaa…</small></div>
+  <h2 style="margin-top:20px;font-size:16px">🕐 Xaaladda saacad kasta (24 saac)</h2>
+  <div class="legend"><span class="l0">🟢 Wanaagsan</span><span class="l1">🟡 Taxaddar</span><span class="l2">🔴 Ha gelin</span></div>
+  <div class="hours" id="chart"></div>
+</section>
+
+<section id="saadaal" class="card">
+  <h2>📅 Saadaasha 3 maalmood</h2>
+  <div class="grid" id="days"></div>
+</section>
+
+<section class="card">
+  <h2>🚤 Masaafada la talinayo</h2>
+  <div class="grid">
+    <div class="stat"><b>Huuri / Alwax</b><span>Qiyaastii 2–5 miles</span></div>
+    <div class="stat"><b>Doon 15 kW</b><span>Qiyaastii 1–7 miles</span></div>
+    <div class="stat"><b>Doon 60 kW</b><span>Qiyaastii 2–40+ miles</span></div>
+    <div class="stat"><b>Foolfe</b><span>60 kW iyo wixii ka badan</span></div>
+  </div>
+</section>
+
+<section id="freeCard" class="card free">
+  <h2>🎁 3 BILOOD OO BILAASH AH</h2>
+  <p>Isdiiwaangeli oo isticmaal adeegga kalluumeysiga 3 bilood oo bilaash ah.</p>
+  <button class="primary" onclick="openModal('register')">Isdiiwaangeli bilaash</button>
+  <button class="ghost" style="width:100%;margin-top:8px" onclick="openModal('login')">Horey ma u diiwaangashanayd? Soo gal</button>
+</section>
+
+<section id="akoon" class="card">
+  <h2>👤 Akoonkayga</h2>
+  <div id="accountStatus">Weli ma lihid akoon. Riix “Isdiiwaangeli bilaash” si aad u bilowdo.</div>
+</section>
+
+<section id="premium" class="card">
+  <h2>💚 Premium Kalluumeysato</h2>
+  <p>Digniino toos ah, xog faahfaahsan iyo warbixinno kalluumeysi.</p>
+  <div class="price">$1 / bil</div>
+  <p><small>Lacagta waxaa lagu bixiyaa EVCPlus.</small></p>
+  <button class="primary" onclick="openModal('pay')">💳 Ku bixi EVCPlus</button>
+</section>
+
+<section class="card ad">
+  <h3>📢 Xayeysiiskaaga halkaan ka muuqda</h3>
+  <p><b>“Qalabkaaga kalluumeysiga meel keliya ka hel!”</b></p>
+  <small>Goobta xayeysiiska waxaa lagu iibin karaa ganacsatada Soomaaliyeed.</small>
+</section>
+
+</main>
+
+<footer>
+  Kalluumeysato Soomaaliyeed © 2026<br>
+  Xogta: Open-Meteo (saadaal badeed iyo cimilo). Waa tilmaam, ma beddelayso go'aankaaga iyo khibradaada.<br>
+  <b>Haddii hawadu xumaato, ka soo noqo badda.</b>
+</footer>
+
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modalbox">
+    <h2 id="mtitle"></h2>
+    <div id="mcontent"></div>
+    <button class="primary" onclick="closeModal()" style="margin-top:12px;background:#667c87">Xir</button>
+  </div>
+</div>
+
+<script>
+/* ---------- Goobaha (qiyaas xeeb/badda u dhow) ---------- */
+const LOC={
+"Muqdisho":[2.05,45.45],"Afgooye":[2.0,45.5],"Marka":[1.7,44.95],"Baraawe":[1.0,44.2],
+"Kismaayo":[-0.45,42.65],"Jamaame":[-0.2,42.85],"Badhaadhe":[-1.3,41.5],"Hobyo":[5.35,48.7],
+"Xarardheere":[4.65,48.1],"Eyl":[8.0,50.0],"Garacad":[6.1,49.2],"Bandarbeyla":[9.5,51.0],
+"Qardho":[9.6,51.0],"Boosaaso":[11.5,49.2],"Caluula":[12.1,50.9],"Qandala":[11.6,49.9],
+"Lasqoray":[11.4,48.3],"Hargeysa":[10.55,45.0],"Berbera":[10.55,45.0],"Saylac":[11.5,43.5],
+"Lughaya":[10.85,44.9],"Maydh":[11.2,47.1],"Laasqoray":[11.4,48.3],"Xiis":[11.2,48.4],"Ceel Sheekh":[10.9,46.2]
+};
+/* Xadka nabdoon ee nooc kasta: [dabayl km/s, hirar m] */
+const BOATS={
+ huuri:{n:"Huuri / Alwax",i:"🛶",w:15,h:0.6},
+ d15:{n:"Doon 15 kW",i:"🚤",w:22,h:1.2},
+ d60:{n:"Doon 60 kW",i:"⛵",w:30,h:2.0},
+ foolfe:{n:"Foolfe",i:"🚢",w:38,h:2.8}
+};
+let boat=localStorage.getItem('k_boat')||'d15';
+let DATA=null;
+
+/* ---------- Backend (Supabase) — halkan geli furayaasha ---------- */
+const SB_URL='https://gulppywsmtbkktqnxljf.supabase.co';
+const SB_KEY='sb_publishable_6Xa-Vpj18F1HHF1muLLw9A_d4HVgWpO';
+const BACKEND=!SB_URL.startsWith('PASTE');
+function sbHeaders(extra){return Object.assign({apikey:SB_KEY,'Content-Type':'application/json'},extra||{})}
+function sb(table,body){return fetch(SB_URL+'/rest/v1/'+table,{method:'POST',headers:sbHeaders({Prefer:'return=minimal'}),body:JSON.stringify(body),keepalive:true})}
+function vid(){let v=safeGet('k_vid');if(!v){v=(crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random().toString(16).slice(2));safeSet('k_vid',v)}return v}
+function track(type,extra){
+  if(!BACKEND)return;
+  sb('events',Object.assign({visitor_id:vid(),type:type,place:$('locationSelect').value,boat:boat,ua:navigator.userAgent.slice(0,120)},extra||{})).catch(()=>{});
+}
+
+const $=id=>document.getElementById(id);
+function go(id){$(id).scrollIntoView({behavior:'smooth'})}
+function safeGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function safeSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+/* ---------- Qiimeynta xaaladda ---------- */
+function level(wind,wave,gust){
+  const b=BOATS[boat];
+  const g=gust||wind;
+  if(wind>b.w*1.25||wave>b.h*1.35||g>b.w*1.7) return 2;
+  if(wind>b.w||wave>b.h||g>b.w*1.35) return 1;
+  return 0;
+}
+const LV=[
+ {cls:"",ic:"🟢",t:"WANAAGSAN",m:"Xaaladdu way deggan tahay doontaada. Weli ka hubi cimilada goobtaada ka hor intaadan bixin."},
+ {cls:"warn",ic:"🟡",t:"TAXADDAR",m:"Dabayl ama hirar ayaa kor u kacaya. Ha fogaan, deeqna u ag fadhiiso xeebta."},
+ {cls:"bad",ic:"🔴",t:"HA GELIN BADDA",m:"Xaaladdu waa halis doontan. Sug ilaa cimiladu deggan tahay."}
+];
+
+/* ---------- Soo qaadista xogta dhabta ah ---------- */
+async function loadData(force){
+  const place=$('locationSelect').value;
+  const [lat,lon]=LOC[place]||LOC["Marka"];
+  $('hPlace').textContent=place;
+  $('updated').textContent="Waa la cusboonaysiinayaa…";
+  const ck='k_cache_'+place;
+  try{
+    const f='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&hourly=wind_speed_10m,wind_gusts_10m,precipitation_probability&wind_speed_unit=kmh&timezone=auto&forecast_days=4';
+    const m='https://marine-api.open-meteo.com/v1/marine?latitude='+lat+'&longitude='+lon+'&hourly=wave_height,sea_surface_temperature&timezone=auto&forecast_days=4';
+    const [a,b]=await Promise.all([fetch(f).then(r=>{if(!r.ok)throw 0;return r.json()}),fetch(m).then(r=>r.ok?r.json():null).catch(()=>null)]);
+    const h=a.hourly, mh=b&&b.hourly?b.hourly:{};
+    const rows=h.time.map((t,i)=>({
+      t, wind:h.wind_speed_10m[i], gust:h.wind_gusts_10m[i], rain:h.precipitation_probability[i],
+      wave:mh.wave_height?mh.wave_height[i]:null, sst:mh.sea_surface_temperature?mh.sea_surface_temperature[i]:null
+    }));
+    DATA={place,rows,ts:Date.now(),hasWave:!!mh.wave_height};
+    safeSet(ck,JSON.stringify(DATA));
+  }catch(e){
+    const c=safeGet(ck);
+    if(c){try{DATA=JSON.parse(c)}catch(_){}}
+    if(!DATA||DATA.place!==place){DATA=null;showError();return}
+  }
+  render();
+}
+function showError(){
+  $('xaalad').classList.remove('skel');
+  $('hBadge').textContent="📡";$('hTitle').textContent="Xog lama helin";
+  $('hMsg').textContent="Internet-ka hubi, kadibna riix “Cusboonaysii”.";
+  $('updated').textContent="Xogta lama soo qaadi karin";
+}
+
+/* ---------- Muujinta ---------- */
+function fmtH(t){return t.slice(11,16)}
+function dayName(d){return ["Axad","Isniin","Talaado","Arbaco","Khamiis","Jimce","Sabti"][d.getDay()]}
+function render(){
+  if(!DATA)return;
+  const rows=DATA.rows;
+  // saacadda ugu dhow hadda
+  const now=Date.now();
+  let idx=rows.findIndex(r=>new Date(r.t).getTime()>=now-1800000);
+  if(idx<0)idx=0;
+  // time-zone-ka goobta: Open-Meteo wuxuu siiyaa waqti maxalli ah (Soomaaliya UTC+3)
+  const cur=rows[idx];
+  const L=level(cur.wind,cur.wave??0,cur.gust);
+  const hero=$('xaalad');
+  hero.classList.remove('skel','warn','bad');
+  if(LV[L].cls)hero.classList.add(LV[L].cls);
+  $('hBadge').textContent=LV[L].ic;
+  $('hTitle').textContent=LV[L].t;
+  $('hMsg').innerHTML=LV[L].m+(DATA.hasWave?'':'<br><small>Xogta hirarka goobtan laguma helin; qiimeyntu waxay ku saleysan tahay dabaysha.</small>');
+  $('sWind').textContent=Math.round(cur.wind)+' km/s';
+  $('sWave').textContent=cur.wave!=null?cur.wave.toFixed(1)+' m':'—';
+  $('sTemp').textContent=cur.sst!=null?Math.round(cur.sst)+'°C':'—';
+  $('sRain').textContent=(cur.rain??0)+'%';
+  $('updated').textContent='Cusboonaysiin: '+new Date(DATA.ts).toLocaleTimeString('so',{hour:'2-digit',minute:'2-digit'})+' · Ilo: Open-Meteo';
+
+  // 24 saac
+  const next=rows.slice(idx,idx+24);
+  const LB=['Wanaagsan','Taxaddar','Ha gelin'],IC=['🟢','🟡','🔴'];
+  $('chart').innerHTML=next.map(r=>{
+    const l=level(r.wind,r.wave??0,r.gust);
+    return '<div class="hr '+['','warn','bad'][l]+'"><div class="tm">'+fmtH(r.t)+'</div><div class="ic">'+IC[l]+'</div><div class="lb">'+LB[l]+'</div><div class="dt">🌬️ '+Math.round(r.wind)+' km/s'+(r.wave!=null?'<br>🌊 '+r.wave.toFixed(1)+' m':'')+'</div></div>';
+  }).join('');
+
+  // waqtiyada ugu fiican maanta (05:00–18:00 xaggaas oo hadda ka dambeeya)
+  const today=cur.t.slice(0,10);
+  const day=rows.filter(r=>r.t.startsWith(today)&&+r.t.slice(11,13)>=5&&+r.t.slice(11,13)<=18&&new Date(r.t).getTime()>=now-3600000);
+  $('windows').innerHTML=bestWindows(day);
+
+  // 3 maalmood
+  const days=[...new Set(rows.map(r=>r.t.slice(0,10)))].slice(0,3);
+  $('days').innerHTML=days.map((d,i)=>{
+    const rs=rows.filter(r=>r.t.startsWith(d)&&+r.t.slice(11,13)>=5&&+r.t.slice(11,13)<=18);
+    if(!rs.length)return '';
+    const lv=rs.map(r=>level(r.wind,r.wave??0,r.gust));
+    const worst=Math.max(...lv), good=lv.filter(x=>x===0).length;
+    const mw=Math.round(Math.max(...rs.map(r=>r.wind)));
+    const mh=DATA.hasWave?Math.max(...rs.map(r=>r.wave||0)).toFixed(1)+' m':'—';
+    const nm=i===0?'Maanta':i===1?'Berri':dayName(new Date(d+'T12:00'));
+    const lab=good>=8?'🟢 Wanaagsan':good>=4?'🟡 Taxaddar':'🔴 Xun';
+    const bw=bestWindows(rs,true);
+    return '<div class="day"><div class="d">'+nm+'</div><div>'+lab+'</div><small>🌬️ ilaa '+mw+' km/s · 🌊 ilaa '+mh+'</small><br><small>'+bw+'</small></div>';
+  }).join('');
+}
+
+function bestWindows(rs,short){
+  if(!rs.length)return short?'—':'<div class="win warn"><div>🌙</div><div>Maanta waqtiyada kalluumeysiga (05:00–18:00) way dhammaadeen. Eeg saadaasha berri.</div></div>';
+  // ka dhex raadi xilliyada isku xigta ee nabdoon
+  let best=null,cur=null;
+  rs.forEach(r=>{
+    const l=level(r.wind,r.wave??0,r.gust);
+    if(l===0){ if(!cur)cur={s:r.t,e:r.t,n:1}; else{cur.e=r.t;cur.n++} if(!best||cur.n>best.n)best={...cur}; }
+    else cur=null;
+  });
+  if(!best){
+    return short?'Ma jiro waqti nabdoon':'<div class="win bad"><div>🔴</div><div><div class="t">Ma jiro waqti nabdoon maanta</div><div class="mut">Dabaysha ama hirarku way ka sarreeyaan xadka nooca doontaada.</div></div></div>';
+  }
+  const endH=String((+best.e.slice(11,13)+1)%24).padStart(2,'0')+':00';
+  const txt=fmtH(best.s)+' – '+endH;
+  if(short)return '⏰ '+txt;
+  const warnHrs=rs.filter(r=>level(r.wind,r.wave??0,r.gust)===1).map(r=>fmtH(r.t));
+  let html='<div class="win"><div style="font-size:26px">🟢</div><div><div class="t">'+txt+'</div><div class="mut">Waqtiga ugu dheer ee nabdoon ('+best.n+' saacadood)</div></div></div>';
+  if(warnHrs.length)html+='<div class="win warn"><div style="font-size:26px">🟡</div><div><div class="t">Taxaddar</div><div class="mut">Saacadaha: '+warnHrs.slice(0,6).join(', ')+(warnHrs.length>6?'…':'')+'</div></div></div>';
+  return html;
+}
+
+function renderBoats(){
+  $('boats').innerHTML=Object.entries(BOATS).map(([k,b])=>'<button class="boat '+(k===boat?'on':'')+'" onclick="setBoat(\''+k+'\')"><b>'+b.i+' '+b.n+'</b><small>Dabayl ≤ '+b.w+' km/s · Hirar ≤ '+b.h+' m</small></button>').join('');
+}
+function setBoat(k){boat=k;safeSet('k_boat',k);renderBoats();render()}
+function changeLocation(){safeSet('k_goob',$('locationSelect').value);track('location');DATA=null;$('xaalad').classList.add('skel');loadData()}
+
+/* ---------- Akoonka (prototype) ---------- */
+function normalizePhone(v){return v.replace(/\D/g,'').replace(/^252/,'').replace(/^0/,'')}
+async function hashPin(pin,phone){
+  try{
+    const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(phone+':'+pin+':kalluumeysato'));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }catch(e){return btoa(phone+pin)}
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+/* Qofka diiwaangashan: kaarka bilaashka waa la qariyaa, akoonka waa kor loo qaadaa,
+   Premium wuxuu muuqdaa kaliya marka bilaashku dhow yahay inuu dhammaado (<=7 maalmood) ama dhammaaday. */
+function applyAccountLayout(state,days){
+  const reg=state!=='none';
+  $('freeCard').style.display=reg?'none':'';
+  if(reg)document.querySelector('main').prepend($('akoon'));
+  const showPrem=!reg||state==='expired'||days<=7;
+  $('premium').style.display=showPrem?'':'none';
+  $('navPremium').style.display=showPrem?'':'none';
+}
+function loadAccount(){
+  const u=safeGet('kalluumeysi_user'); const el=$('accountStatus');
+  if(!u){applyAccountLayout('none');return;}
+  try{
+    const x=JSON.parse(u);
+    const exp=new Date(x.started); exp.setMonth(exp.getMonth()+3);
+    const rem=exp.getTime()-Date.now();
+    if(rem>0){
+      const d=Math.ceil(rem/86400000);
+      el.innerHTML='<div class="ok"><b>👋 Ku soo dhowow '+esc(x.name)+'</b><p style="margin:6px 0 0">3-da bilood ee bilaashka ah way kuu socdaan.</p><p style="margin:4px 0 0">Waqti ka haray: <b>'+d+' maalmood</b></p>'+(d<=7?'<p style="margin:6px 0 0"><b>⏳ Waxay dhowdahay inay dhammaadaan.</b> Dooro Premium si aadan u joojin.</p>':'')+'</div><button class="ghost" style="width:100%;margin-top:10px" onclick="openModal(\'pay\')">💚 Ku bixi Premium hore</button>';
+      applyAccountLayout('active',d);
+    }else{
+      el.innerHTML='<div class="wr"><b>🔒 3-da bilood bilaashka ah way dhammaadeen.</b><p style="margin:6px 0 0">Dooro Premium si aad adeegga u sii isticmaasho.</p></div>';
+      applyAccountLayout('expired',0);
+    }
+  }catch(e){applyAccountLayout('none');}
+}
+function openModal(type){
+  $('modal').style.display='flex'; const c=$('mcontent');
+  if(type==='register'){
+    $('mtitle').textContent='🎁 Isdiiwaangeli';
+    c.innerHTML='<p>Ku bilow <b>3 bilood oo bilaash ah</b>.</p><p style="font-size:12px;color:#5d7480">Magacaaga iyo lambarkaaga waxaa loo isticmaalaa akoonkaaga iyo adeegga kaliya.</p><input id="regName" placeholder="Magacaaga" autocomplete="name"><input id="regPhone" placeholder="Lambarka telefoonka" inputmode="tel"><input id="regPin" type="password" placeholder="PIN (4–6 lambar)" inputmode="numeric" maxlength="6"><input id="regPin2" type="password" placeholder="Ku celi PIN-ka" inputmode="numeric" maxlength="6"><button class="primary" onclick="registerUser()">Isdiiwaangeli oo Bilow</button><div id="regResult"></div>';
+  }else if(type==='login'){
+    showLogin();
+  }else{
+    $('mtitle').textContent='💚 Ku Bixi EVCPlus';
+    c.innerHTML='<p>Lacagta Premium: <b>$1 / bil</b></p><input id="payPhone" placeholder="Lambarka EVCPlus-kaaga" inputmode="tel"><div class="ussd" id="ussdCode">*712*NUMBER*1#</div><button class="primary" onclick="prepareEVC()">📱 Diyaari Code-ka</button><div id="payResult"></div>';
+  }
+}
+async function registerUser(){
+  const name=$('regName').value.trim(), phone=normalizePhone($('regPhone').value);
+  const pin=$('regPin').value.trim(), pin2=$('regPin2').value.trim(), out=$('regResult');
+  if(!name||phone.length<9||!/^\d{4,6}$/.test(pin)||pin!==pin2){
+    out.innerHTML='<p class="er">Fadlan geli magaca, number sax ah iyo PIN 4–6 lambar ah; labada PIN waa inay isku mid noqdaan.</p>';return;
+  }
+  if(safeGet('kalluumeysi_registered_phone')===phone){
+    out.innerHTML='<div class="wr"><b>⚠️ Number-kan hore ayaa loo diiwaangeliyay.</b><p>Number: ******'+phone.slice(-4)+'</p><p>3-da bilood bilaashka ah mar labaad laguma bilaabi karo.</p><button class="primary" onclick="showLogin()">Geli Akoonka Hore</button></div>';return;
+  }
+  const ph=await hashPin(pin,phone);
+  if(BACKEND){
+    try{
+      const r=await sb('users',{name:name,phone:phone,pin_hash:ph});
+      if(r.status===409){
+        out.innerHTML='<div class="wr"><b>⚠️ Number-kan hore ayaa loo diiwaangeliyay.</b><p>3-da bilood bilaashka ah mar labaad laguma bilaabi karo.</p><button class="primary" onclick="showLogin()">Geli Akoonka Hore</button></div>';return;
+      }
+      if(!r.ok)throw 0;
+    }catch(e){
+      out.innerHTML='<p class="er">Isdiiwaangelintu ma shaqayn. Internet-ka hubi oo isku day mar kale.</p>';return;
+    }
+  }
+  safeSet('kalluumeysi_registered_phone',phone);
+  safeSet('kalluumeysi_user',JSON.stringify({name,phone,pinHash:ph,started:Date.now()}));
+  track('register',{phone:phone});
+  out.innerHTML='<div class="ok"><b>✅ Waad isdiiwaangelisay!</b><p style="margin:6px 0 0">Ku soo dhowow '+esc(name)+'. 3-da bilood bilaashka ah hadda ayay bilaabmeen.</p></div>';
+  loadAccount();
+  setTimeout(()=>{closeModal();window.scrollTo({top:0,behavior:'smooth'})},1500);
+}
+function showLogin(){
+  $('mtitle').textContent='🔐 Geli Akoonka';
+  $('mcontent').innerHTML='<input id="loginPhone" placeholder="Lambarka telefoonka" inputmode="tel"><input id="loginPin" type="password" placeholder="PIN-kaaga" inputmode="numeric" maxlength="6"><button class="primary" onclick="loginUser()">Geli</button><div id="loginResult"></div>';
+}
+async function loginUser(){
+  const phone=normalizePhone($('loginPhone').value), pin=$('loginPin').value, out=$('loginResult');
+  let s=null; try{s=JSON.parse(safeGet('kalluumeysi_user')||'null')}catch(e){}
+  if(BACKEND){
+    try{
+      const h=await hashPin(pin,phone);
+      const r=await fetch(SB_URL+'/rest/v1/rpc/check_login',{method:'POST',headers:sbHeaders(),body:JSON.stringify({p_phone:phone,p_hash:h})});
+      const j=await r.json();
+      if(Array.isArray(j)&&j.length){
+        safeSet('kalluumeysi_user',JSON.stringify({name:j[0].name,phone:phone,pinHash:h,started:new Date(j[0].started_at).getTime()}));
+        out.innerHTML='<div class="ok"><b>✅ Waad gashay.</b></div>';loadAccount();setTimeout(()=>{closeModal();window.scrollTo({top:0,behavior:'smooth'})},900);return;
+      }
+    }catch(e){}
+  }
+  if(s&&s.phone===phone&&s.pinHash&&s.pinHash===await hashPin(pin,phone)){
+    out.innerHTML='<div class="ok"><b>✅ Waad gashay.</b></div>'; loadAccount();
+    setTimeout(()=>{closeModal();window.scrollTo({top:0,behavior:'smooth'})},900);
+  }else{
+    out.innerHTML='<p class="er">Number ama PIN waa khalad.</p>';
+  }
+}
+
+/* ---------- EVCPlus ---------- */
+function prepareEVC(){
+  const phone=$('payPhone').value.replace(/\D/g,''), out=$('payResult');
+  if(phone.length<8){out.innerHTML='<p class="er">Fadlan geli lambarka EVCPlus si sax ah.</p>';return}
+  track('pay_click',{phone:normalizePhone(phone)});
+  const merchant='619235489';
+  const code='*712*'+merchant+'*1#';
+  $('ussdCode').textContent=code;
+  out.innerHTML='<div class="ok"><b>📱 Code-ka waa diyaar.</b><p>Riix badhanka hoose. Haddii uusan furmin, code-ka gacanta ku garaac qaybta telefoonka.</p><button class="primary" onclick="openUSSD(\''+code+'\')">Fur qaybta telefoonka</button></div>';
+}
+function openUSSD(code){
+  // '#' waa in loo beddelaa %23 si telefoonku u aqoonsado
+  location.href='tel:'+code.replace(/#/g,'%23');
+}
+function closeModal(){$('modal').style.display='none'}
+
+/* ---------- Ku dar shaashadda (PWA) ---------- */
+let deferredInstall=null;
+const isStandalone=(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;showInstall()});
+window.addEventListener('appinstalled',()=>{$('install').style.display='none';deferredInstall=null});
+function showInstall(){if(isStandalone)return;$('install').style.display='block'}
+async function doInstall(){
+  if(deferredInstall){deferredInstall.prompt();try{await deferredInstall.userChoice}catch(e){}deferredInstall=null;$('install').style.display='none'}
+  else{$('installHelp').style.display='block'}
+}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+window.addEventListener('load',()=>{if(!isStandalone)setTimeout(showInstall,2500)});
+
+/* ---------- Bilow ---------- */
+window.addEventListener('load',()=>{
+  const v=safeGet('k_goob'); if(v&&LOC[v])$('locationSelect').value=v;
+  renderBoats(); loadAccount(); loadData(); track('visit');
+});
+</script>
+</body>
+</html>
