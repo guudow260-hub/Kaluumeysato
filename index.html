@@ -500,11 +500,22 @@ function closeModal(){$('modal').style.display='none'}
 let deferredInstall=null;
 const isStandalone=(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;showInstall()});
-window.addEventListener('appinstalled',()=>{$('install').style.display='none';deferredInstall=null});
+window.addEventListener('appinstalled',()=>{$('install').style.display='none';deferredInstall=null;track('install')});
 function showInstall(){if(isStandalone)return;$('install').style.display='block'}
+const UA=navigator.userAgent;
+const IN_APP=/FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|Line\/|Snapchat|TikTok|MiuiBrowser/i.test(UA);
+const IS_ANDROID=/Android/i.test(UA);
+function openInChrome(){
+  const path=location.host+location.pathname+location.search+location.hash;
+  location.href='intent://'+path+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(location.href)+';end';
+}
 async function doInstall(){
-  if(deferredInstall){deferredInstall.prompt();try{await deferredInstall.userChoice}catch(e){}deferredInstall=null;$('install').style.display='none'}
-  else{$('installHelp').style.display='block'}
+  /* 1) Chrome: install toos ah */
+  if(deferredInstall){deferredInstall.prompt();try{await deferredInstall.userChoice}catch(e){}deferredInstall=null;$('install').style.display='none';return}
+  /* 2) Facebook / Instagram (Android): ku fur Chrome */
+  if(IN_APP&&IS_ANDROID){openInChrome();return}
+  /* 3) Kuwa kale (iPhone iwm): tilmaamaha gacanta */
+  $('installHelp').style.display='block';
 }
 if('serviceWorker' in navigator){
   const hadSW=!!navigator.serviceWorker.controller;
@@ -519,6 +530,8 @@ window.addEventListener('load',()=>{if(!isStandalone)setTimeout(showInstall,2500
 window.addEventListener('load',()=>{
   const v=safeGet('k_goob'); if(v&&LOC[v])$('locationSelect').value=v;
   renderBoats(); loadAccount(); loadData(); track('visit');
+  /* App-ka laga furay shaashadda guriga (installed) */
+  if(isStandalone)track('app_open');
 });
 </script>
 </body>
