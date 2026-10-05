@@ -16,10 +16,12 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
-header{background:linear-gradient(160deg,#055a73,#0aa0a0);color:#fff;padding:26px 16px 54px;text-align:center;position:relative;overflow:hidden}
+header{background:linear-gradient(160deg,#055a73,#0aa0a0);color:#fff;padding:50px 16px 54px;text-align:center;position:relative;overflow:hidden}
 header:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:34px;background:var(--bg);border-radius:50% 50% 0 0/100% 100% 0 0}
 header h1{margin:0 0 6px;font-size:26px}
 header p{margin:0;opacity:.92;font-size:15px}
+.lang{position:absolute;top:10px;inset-inline-end:10px;z-index:3;width:auto;background:#ffffff26;color:#fff;border:1px solid #ffffff66;border-radius:10px;padding:7px 10px;font-size:14px;font-weight:700}
+.lang option{color:#10252e}
 nav{display:flex;gap:7px;overflow:auto;background:#fff;padding:9px 10px;position:sticky;top:0;z-index:5;box-shadow:0 2px 10px #0002;scrollbar-width:none}
 nav::-webkit-scrollbar{display:none}
 nav button{border:0;background:#e5f4f6;padding:10px 14px;border-radius:20px;white-space:nowrap;font-weight:700;color:var(--pri2);font-size:14px;cursor:pointer}
@@ -32,7 +34,7 @@ select{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;f
 .loc-row{display:flex;gap:8px;align-items:center;margin-top:8px}
 .loc-row button{flex:0 0 auto}
 /* hero status */
-.hero{border-left:8px solid var(--ok);transition:border-color .3s}
+.hero{border-inline-start:8px solid var(--ok);transition:border-color .3s}
 .hero.warn{border-color:var(--wa)}.hero.bad{border-color:var(--bad)}
 .hero .row{display:flex;align-items:center;gap:14px}
 .badge{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;font-size:30px;background:#e4f7ee;flex:0 0 auto}
@@ -46,11 +48,11 @@ select{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;f
 .msg{margin-top:14px;padding:13px;border-radius:12px;background:#f1f9fb}
 /* boats */
 .boats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.boat{border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.boat{border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px;text-align:start;cursor:pointer;font:inherit;color:inherit}
 .boat b{display:block}
 .boat.on{border-color:var(--pri);background:#e8f7f8}
 /* windows */
-.win{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:#eefaf4;border-left:5px solid var(--ok);margin-top:10px}
+.win{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:#eefaf4;border-inline-start:5px solid var(--ok);margin-top:10px}
 .win.warn{background:#fff8e3;border-color:var(--wa)}.win.bad{background:#fdeeed;border-color:var(--bad)}
 .win .t{font-weight:800}
 /* chart */
@@ -76,10 +78,10 @@ input{width:100%;padding:14px;margin:6px 0;border:1px solid var(--line);border-r
 .free{background:linear-gradient(135deg,#fff7de,#ffefb8);border:1px solid #f0d477}
 .price{font-size:30px;font-weight:900;color:var(--pri)}
 .ad{border:2px dashed #f0a33b;text-align:center}
-.ok{background:#e9fff3;border-left:5px solid var(--ok);padding:13px;border-radius:10px;margin-top:10px}
-.wr{background:#fff8e3;border-left:5px solid var(--wa);padding:13px;border-radius:10px;margin-top:10px}
-.er{background:#fff0f0;border-left:5px solid var(--bad);padding:13px;border-radius:10px;margin-top:10px}
-.ussd{background:#101820;color:#63ff9c;padding:13px;border-radius:10px;font-family:monospace;text-align:center;margin:8px 0}
+.ok{background:#e9fff3;border-inline-start:5px solid var(--ok);padding:13px;border-radius:10px;margin-top:10px}
+.wr{background:#fff8e3;border-inline-start:5px solid var(--wa);padding:13px;border-radius:10px;margin-top:10px}
+.er{background:#fff0f0;border-inline-start:5px solid var(--bad);padding:13px;border-radius:10px;margin-top:10px}
+.ussd{background:#101820;color:#63ff9c;padding:13px;border-radius:10px;font-family:monospace;text-align:center;margin:8px 0;direction:ltr}
 .modal{display:none;position:fixed;inset:0;background:#000a;z-index:10;align-items:center;justify-content:center;padding:18px}
 .modalbox{background:#fff;border-radius:18px;padding:20px;max-width:430px;width:100%;max-height:90vh;overflow:auto}
 .skel{animation:p 1.2s infinite}@keyframes p{50%{opacity:.4}}
@@ -91,148 +93,410 @@ footer{text-align:center;padding:26px 14px;color:var(--mut);font-size:13px}
 </head>
 <body>
 <header>
-  <h1>🌊 Kalluumeysato Soomaaliyeed</h1>
-  <p>Ogow xaaladda badda ka hor intaadan badda gelin.</p>
+  <select id="langSelect" class="lang" aria-label="Language" onchange="setLang(this.value)">
+    <option value="so">Soomaali</option>
+    <option value="en">English</option>
+    <option value="ar">العربية</option>
+    <option value="sw">Kiswahili</option>
+  </select>
+  <h1 data-i18n="h1"></h1>
+  <p data-i18n="sub"></p>
 </header>
 
 <nav>
-  <button onclick="go('xaalad')">🌊 Xaaladda</button>
-  <button onclick="go('waqtiyo')">⏱️ Waqtiyada</button>
-  <button onclick="go('saadaal')">📅 Saadaasha</button>
-  <button onclick="go('goob')">📍 Goobta</button>
-  <button onclick="go('akoon')">👤 Akoon</button>
-  <button id="navPremium" onclick="go('premium')">💚 Premium</button>
+  <button onclick="go('xaalad')" data-i18n="navStatus"></button>
+  <button onclick="go('waqtiyo')" data-i18n="navTimes"></button>
+  <button onclick="go('saadaal')" data-i18n="navForecast"></button>
+  <button onclick="go('goob')" data-i18n="navPlace"></button>
+  <button onclick="go('akoon')" data-i18n="navAccount"></button>
+  <button id="navPremium" onclick="go('premium')" data-i18n="navPremium"></button>
 </nav>
 
 <main>
 
 <section id="install" class="card install">
-  <div class="row2"><img src="icon-192.png" alt=""><div><b>📲 Ku dar shaashadda telefoonkaaga</b><div class="mut" style="font-size:13px">Si aad u furto mar kasta adigoon link raadin.</div></div></div>
-  <button class="primary" style="margin-top:12px" onclick="doInstall()">Ku dar shaashadda hore</button>
-  <div id="installHelp" class="wr" style="display:none">Riix <b>⋮</b> (kore midig ee Chrome), kadibna dooro <b>Add to Home screen</b> ama <b>Install app</b>.<br><small>iPhone (Safari): riix <b>Share</b> kadibna <b>Add to Home Screen</b>.</small></div>
+  <div class="row2"><img src="icon-192.png" alt=""><div><b data-i18n="instTitle"></b><div class="mut" style="font-size:13px" data-i18n="instSub"></div></div></div>
+  <button class="primary" style="margin-top:12px" onclick="doInstall()" data-i18n="instBtn"></button>
+  <div id="installHelp" class="wr" style="display:none" data-i18n-html="instHelp"></div>
 </section>
 
 <section id="goob" class="card">
-  <h2>📍 Dooro goobtaada</h2>
-  <select id="locationSelect" onchange="changeLocation()">
-    <optgroup label="🇸🇴 Soomaaliya">
-      <option>Muqdisho</option><option>Afgooye</option><option selected>Marka</option><option>Baraawe</option>
-      <option>Kismaayo</option><option>Jamaame</option><option>Badhaadhe</option><option>Hobyo</option>
-      <option>Xarardheere</option><option>Eyl</option><option>Garacad</option><option>Bandarbeyla</option>
-      <option>Qardho</option><option>Boosaaso</option><option>Caluula</option><option>Qandala</option><option>Lasqoray</option>
-    </optgroup>
-    <optgroup label="🏴 Somaliland">
-      <option>Hargeysa</option><option>Berbera</option><option>Saylac</option><option>Lughaya</option>
-      <option>Maydh</option><option>Laasqoray</option><option>Xiis</option><option>Ceel Sheekh</option>
-    </optgroup>
-  </select>
-  <div class="loc-row"><small id="updated">—</small><span style="flex:1"></span><button class="ghost" onclick="loadData(true)">🔄 Cusboonaysii</button></div>
+  <h2 data-i18n="locTitle"></h2>
+  <select id="locationSelect" onchange="changeLocation()"></select>
+  <div class="loc-row"><small id="updated">—</small><span style="flex:1"></span><button class="ghost" onclick="loadData(true)" data-i18n="refresh"></button></div>
+  <div class="loc-row"><small data-i18n="unitLbl"></small><span style="flex:1"></span>
+    <select id="unitSelect" onchange="setUnit(this.value)" style="width:auto;padding:8px 12px"><option value="kmh">km/h</option><option value="kn">knots</option></select>
+  </div>
 </section>
 
 <section class="card">
-  <h2>🚤 Nooca doontaada</h2>
+  <h2 data-i18n="boatsTitle"></h2>
   <div class="boats" id="boats"></div>
-  <p class="mut" style="margin:10px 0 0;font-size:13px">Digniintu waxay ku xiran tahay nooca doonta: doon yar ayaa hirar yar xitaa halis ku ah.</p>
+  <p class="mut" style="margin:10px 0 0;font-size:13px" data-i18n="boatNote"></p>
 </section>
 
 <section id="xaalad" class="card hero skel">
   <div class="row">
     <div class="badge" id="hBadge">⏳</div>
-    <div><small>Xaaladda badda hadda — <span id="hPlace">Marka</span></small><div class="big" id="hTitle">Waa la soo rarayaa…</div></div>
+    <div><small><span data-i18n="heroNow"></span> <span id="hPlace">Marka</span></small><div class="big" id="hTitle"></div></div>
   </div>
   <div class="grid g4">
-    <div class="stat"><span>🌬️ Dabayl</span><b id="sWind">—</b></div>
-    <div class="stat"><span>🌊 Hirar</span><b id="sWave">—</b></div>
-    <div class="stat"><span>🌡️ Biyaha</span><b id="sTemp">—</b></div>
-    <div class="stat"><span>☔ Roob</span><b id="sRain">—</b></div>
+    <div class="stat"><span data-i18n="wind"></span><b id="sWind">—</b></div>
+    <div class="stat"><span data-i18n="wave"></span><b id="sWave">—</b></div>
+    <div class="stat"><span data-i18n="water"></span><b id="sTemp">—</b></div>
+    <div class="stat"><span data-i18n="rain"></span><b id="sRain">—</b></div>
   </div>
-  <div class="msg" id="hMsg">Xogta badda ayaa la helayaa…</div>
+  <div class="msg" id="hMsg"></div>
 </section>
 
 <section id="waqtiyo" class="card">
-  <h2>⏱️ Waqtiyada ugu fiican maanta</h2>
-  <div id="windows"><small>Waa la soo rarayaa…</small></div>
-  <h2 style="margin-top:20px;font-size:16px">🕐 Xaaladda saacad kasta (24 saac)</h2>
-  <div class="legend"><span class="l0">🟢 Wanaagsan</span><span class="l1">🟡 Taxaddar</span><span class="l2">🔴 Ha gelin</span></div>
+  <h2 data-i18n="timesTitle"></h2>
+  <div id="windows"></div>
+  <h2 style="margin-top:20px;font-size:16px" data-i18n="hourlyTitle"></h2>
+  <div class="legend" id="legend"></div>
   <div class="hours" id="chart"></div>
 </section>
 
 <section id="saadaal" class="card">
-  <h2>📅 Saadaasha 3 maalmood</h2>
+  <h2 data-i18n="fcTitle"></h2>
   <div class="grid" id="days"></div>
 </section>
 
 <section class="card">
-  <h2>🚤 Masaafada la talinayo</h2>
-  <div class="grid">
-    <div class="stat"><b>Huuri / Alwax</b><span>Qiyaastii 2–5 miles</span></div>
-    <div class="stat"><b>Doon 15 kW</b><span>Qiyaastii 1–7 miles</span></div>
-    <div class="stat"><b>Doon 60 kW</b><span>Qiyaastii 2–40+ miles</span></div>
-    <div class="stat"><b>Foolfe</b><span>60 kW iyo wixii ka badan</span></div>
-  </div>
+  <h2 data-i18n="distTitle"></h2>
+  <div class="grid" id="dist"></div>
 </section>
 
 <section id="freeCard" class="card free">
-  <h2>🎁 3 BILOOD OO BILAASH AH</h2>
-  <p>Isdiiwaangeli oo isticmaal adeegga kalluumeysiga 3 bilood oo bilaash ah.</p>
-  <button class="primary" onclick="openModal('register')">Isdiiwaangeli bilaash</button>
-  <button class="ghost" style="width:100%;margin-top:8px" onclick="openModal('login')">Horey ma u diiwaangashanayd? Soo gal</button>
+  <h2 data-i18n="freeTitle"></h2>
+  <p data-i18n="freeText"></p>
+  <button class="primary" onclick="openModal('register')" data-i18n="regBtn"></button>
+  <button class="ghost" style="width:100%;margin-top:8px" onclick="openModal('login')" data-i18n="loginBtn"></button>
 </section>
 
 <section id="akoon" class="card">
-  <h2>👤 Akoonkayga</h2>
-  <div id="accountStatus">Weli ma lihid akoon. Riix “Isdiiwaangeli bilaash” si aad u bilowdo.</div>
+  <h2 data-i18n="accTitle"></h2>
+  <div id="accountStatus"></div>
 </section>
 
 <section id="premium" class="card">
-  <h2>💚 Premium Kalluumeysato</h2>
-  <p>Digniino toos ah, xog faahfaahsan iyo warbixinno kalluumeysi.</p>
-  <div class="price">$1 / bil</div>
-  <p><small>Lacagta waxaa lagu bixiyaa EVCPlus.</small></p>
-  <button class="primary" onclick="openModal('pay')">💳 Ku bixi EVCPlus</button>
+  <h2 data-i18n="premTitle"></h2>
+  <p data-i18n="premText"></p>
+  <div class="price" data-i18n="price"></div>
+  <p><small data-i18n="payVia"></small></p>
+  <button class="primary" onclick="openModal('pay')" data-i18n="payBtn"></button>
 </section>
 
 <section class="card ad">
-  <h3>📢 Xayeysiiskaaga halkaan ka muuqda</h3>
-  <p><b>“Qalabkaaga kalluumeysiga meel keliya ka hel!”</b></p>
-  <small>Goobta xayeysiiska waxaa lagu iibin karaa ganacsatada Soomaaliyeed.</small>
+  <h3 data-i18n="adTitle"></h3>
+  <p><b data-i18n="adText"></b></p>
+  <small data-i18n="adSub"></small>
 </section>
 
 </main>
 
 <footer>
-  Kalluumeysato Soomaaliyeed © 2026<br>
-  Xogta: Open-Meteo (saadaal badeed iyo cimilo). Waa tilmaam, ma beddelayso go'aankaaga iyo khibradaada.<br>
-  <b>Haddii hawadu xumaato, ka soo noqo badda.</b>
+  <span data-i18n="f1"></span><br>
+  <span data-i18n="f2"></span><br>
+  <b data-i18n="f3"></b>
 </footer>
 
 <div id="modal" class="modal" onclick="if(event.target===this)closeModal()">
   <div class="modalbox">
     <h2 id="mtitle"></h2>
     <div id="mcontent"></div>
-    <button class="primary" onclick="closeModal()" style="margin-top:12px;background:#667c87">Xir</button>
+    <button class="primary" onclick="closeModal()" style="margin-top:12px;background:#667c87" data-i18n="close"></button>
   </div>
 </div>
 
 <script>
+/* =====================================================================
+   LUQADAHA / LANGUAGES  (so, en, ar, sw)
+   ===================================================================== */
+const LOCALE={so:'so',en:'en',ar:'ar-u-nu-latn',sw:'sw'};
+const I18N={
+so:{
+ h1:"🌊 Kalluumeysato Soomaaliyeed", title:"Kalluumeysato Soomaaliyeed",
+ sub:"Ogow xaaladda badda ka hor intaadan badda gelin.",
+ navStatus:"🌊 Xaaladda", navTimes:"⏱️ Waqtiyada", navForecast:"📅 Saadaasha", navPlace:"📍 Goobta", navAccount:"👤 Akoon", navPremium:"💚 Premium",
+ instTitle:"📲 Ku dar shaashadda telefoonkaaga", instSub:"Si aad u furto mar kasta adigoon link raadin.", instBtn:"Ku dar shaashadda hore",
+ instHelp:"Riix <b>⋮</b> (kore midig ee Chrome), kadibna dooro <b>Add to Home screen</b> ama <b>Install app</b>.<br><small>iPhone (Safari): riix <b>Share</b> kadibna <b>Add to Home Screen</b>.</small>",
+ locTitle:"📍 Dooro goobtaada", refresh:"🔄 Cusboonaysii", unitLbl:"Cutubka dabaysha",
+ gSom:"🇸🇴 Soomaaliya", gSl:"🏴 Somaliland", gKe:"🇰🇪 Kenya", gTz:"🇹🇿 Tanzania", gDj:"🇩🇯 Jabuuti", gEr:"🇪🇷 Eritrea", gYe:"🇾🇪 Yemen", gOth:"🌍 Kuwa kale",
+ gps:"📡 Goobtayda hadda (GPS)", gpsShort:"Goobtayda (GPS)", gpsWait:"Goobtaada waa la raadinayaa…", gpsErr:"Goobta lama helin. Ogolow GPS-ka ama dooro magaalo.",
+ updating:"Waa la cusboonaysiinayaa…", updated:"Cusboonaysiin:", src:"Ilo: Open-Meteo", noData:"Xogta lama soo qaadi karin",
+ boatsTitle:"🚤 Nooca doontaada", boatNote:"Digniintu waxay ku xiran tahay nooca doonta: doon yar ayaa hirar yar xitaa halis ku ah.",
+ windShort:"Dabayl", waveShort:"Hirar", upTo:"ilaa",
+ bHuuri:"Huuri / Alwax", bD15:"Doon 15 kW", bD60:"Doon 60 kW", bFoolfe:"Foolfe",
+ heroNow:"Xaaladda badda hadda —", loading:"Waa la soo rarayaa…", msgLoading:"Xogta badda ayaa la helayaa…",
+ wind:"🌬️ Dabayl", wave:"🌊 Hirar", water:"🌡️ Biyaha", rain:"☔ Roob",
+ lvG:"WANAAGSAN", lvC:"TAXADDAR", lvB:"HA GELIN BADDA",
+ mG:"Xaaladdu way deggan tahay doontaada. Weli ka hubi cimilada goobtaada ka hor intaadan bixin.",
+ mC:"Dabayl ama hirar ayaa kor u kacaya. Ha fogaan, deeqna u ag fadhiiso xeebta.",
+ mB:"Xaaladdu waa halis doontan. Sug ilaa cimiladu deggan tahay.",
+ noWave:"Xogta hirarka goobtan laguma helin; qiimeyntu waxay ku saleysan tahay dabaysha.",
+ errTitle:"Xog lama helin", errMsg:"Internet-ka hubi, kadibna riix “Cusboonaysii”.",
+ timesTitle:"⏱️ Waqtiyada ugu fiican maanta", hourlyTitle:"🕐 Xaaladda saacad kasta (24 saac)",
+ lbG:"Wanaagsan", lbC:"Taxaddar", lbB:"Ha gelin", lbBad:"Xun",
+ noneShort:"Ma jiro waqti nabdoon",
+ over:"Maanta waqtiyada kalluumeysiga (05:00–18:00) way dhammaadeen. Eeg saadaasha berri.",
+ noSafe:"Ma jiro waqti nabdoon maanta", noSafeSub:"Dabaysha ama hirarku way ka sarreeyaan xadka nooca doontaada.",
+ longest:"Waqtiga ugu dheer ee nabdoon ({n} saacadood)", hoursLbl:"Saacadaha:",
+ fcTitle:"📅 Saadaasha 3 maalmood", today:"Maanta", tomorrow:"Berri",
+ distTitle:"🚤 Masaafada la talinayo", distAbout:"Qiyaastii {x} miles", dFoolfe:"60 kW iyo wixii ka badan",
+ freeTitle:"🎁 3 BILOOD OO BILAASH AH", freeText:"Isdiiwaangeli oo isticmaal adeegga kalluumeysiga 3 bilood oo bilaash ah.",
+ regBtn:"Isdiiwaangeli bilaash", loginBtn:"Horey ma u diiwaangashanayd? Soo gal",
+ accTitle:"👤 Akoonkayga", accNone:"Weli ma lihid akoon. Riix “Isdiiwaangeli bilaash” si aad u bilowdo.",
+ welcome:"👋 Ku soo dhowow {name}", freeLeft:"3-da bilood ee bilaashka ah way kuu socdaan.", timeLeft:"Waqti ka haray:", daysFmt:"{d} maalmood",
+ endSoon:"⏳ Waxay dhowdahay inay dhammaadaan.", chooseP:"Dooro Premium si aadan u joojin.", payEarly:"💚 Ku bixi Premium hore",
+ expired:"🔒 3-da bilood bilaashka ah way dhammaadeen.", expiredSub:"Dooro Premium si aad adeegga u sii isticmaasho.",
+ premTitle:"💚 Premium Kalluumeysato", premText:"Digniino toos ah, xog faahfaahsan iyo warbixinno kalluumeysi.",
+ price:"$1 / bil", payVia:"Lacagta waxaa lagu bixiyaa EVCPlus (Soomaaliya).", payBtn:"💳 Ku bixi EVCPlus",
+ adTitle:"📢 Xayeysiiskaaga halkaan ka muuqda", adText:"“Qalabkaaga kalluumeysiga meel keliya ka hel!”", adSub:"Goobta xayeysiiska waxaa lagu iibin karaa ganacsatada.",
+ f1:"Kalluumeysato © 2026",
+ f2:"Xogta: Open-Meteo (saadaal badeed iyo cimilo). Waa tilmaam, ma beddelayso go'aankaaga iyo khibradaada.",
+ f3:"Haddii hawadu xumaato, ka soo noqo badda.", close:"Xir",
+ regTitle:"🎁 Isdiiwaangeli", regIntro:"Ku bilow <b>3 bilood oo bilaash ah</b>.",
+ regPriv:"Magacaaga iyo lambarkaaga waxaa loo isticmaalaa akoonkaaga iyo adeegga kaliya.",
+ pName:"Magacaaga", pPhone:"Lambarka telefoonka", pPin:"PIN (4–6 lambar)", pPin2:"Ku celi PIN-ka", regGo:"Isdiiwaangeli oo Bilow",
+ regErr:"Fadlan geli magaca, number sax ah iyo PIN 4–6 lambar ah; labada PIN waa inay isku mid noqdaan.",
+ already:"⚠️ Number-kan hore ayaa loo diiwaangeliyay.", numLbl:"Number:", noRestart:"3-da bilood bilaashka ah mar labaad laguma bilaabi karo.", loginOld:"Geli Akoonka Hore",
+ regFail:"Isdiiwaangelintu ma shaqayn. Internet-ka hubi oo isku day mar kale.",
+ regOk:"✅ Waad isdiiwaangelisay!", regOkSub:"Ku soo dhowow {name}. 3-da bilood bilaashka ah hadda ayay bilaabmeen.",
+ loginTitle:"🔐 Geli Akoonka", pPinLogin:"PIN-kaaga", loginGo:"Geli", loggedIn:"✅ Waad gashay.", loginBad:"Number ama PIN waa khalad.",
+ payTitle:"💚 Ku Bixi EVCPlus", payAmt:"Lacagta Premium: <b>$1 / bil</b>", pEvc:"Lambarka EVCPlus-kaaga", prepBtn:"📱 Diyaari Code-ka",
+ evcBad:"Fadlan geli lambarka EVCPlus si sax ah.", codeReady:"📱 Code-ka waa diyaar.",
+ codeSub:"Riix badhanka hoose. Haddii uusan furmin, code-ka gacanta ku garaac qaybta telefoonka.", openDialer:"Fur qaybta telefoonka"
+},
+en:{
+ h1:"🌊 Fishermen's Sea Guide", title:"Kalluumeysato — Fishermen's Sea Guide",
+ sub:"Check the sea conditions before you go out to sea.",
+ navStatus:"🌊 Conditions", navTimes:"⏱️ Best times", navForecast:"📅 Forecast", navPlace:"📍 Location", navAccount:"👤 Account", navPremium:"💚 Premium",
+ instTitle:"📲 Add to your phone's home screen", instSub:"Open it any time without searching for the link.", instBtn:"Add to home screen",
+ instHelp:"Tap <b>⋮</b> (top right in Chrome), then choose <b>Add to Home screen</b> or <b>Install app</b>.<br><small>iPhone (Safari): tap <b>Share</b>, then <b>Add to Home Screen</b>.</small>",
+ locTitle:"📍 Choose your location", refresh:"🔄 Refresh", unitLbl:"Wind unit",
+ gSom:"🇸🇴 Somalia", gSl:"🏴 Somaliland", gKe:"🇰🇪 Kenya", gTz:"🇹🇿 Tanzania", gDj:"🇩🇯 Djibouti", gEr:"🇪🇷 Eritrea", gYe:"🇾🇪 Yemen", gOth:"🌍 Other",
+ gps:"📡 My current location (GPS)", gpsShort:"My location (GPS)", gpsWait:"Finding your location…", gpsErr:"Could not get your location. Allow GPS or choose a city.",
+ updating:"Updating…", updated:"Updated:", src:"Source: Open-Meteo", noData:"Could not load data",
+ boatsTitle:"🚤 Your boat type", boatNote:"Warnings depend on boat type: a small boat can be at risk even in small waves.",
+ windShort:"Wind", waveShort:"Waves", upTo:"up to",
+ bHuuri:"Small canoe (Huuri)", bD15:"15 kW boat", bD60:"60 kW boat", bFoolfe:"Large boat (Foolfe)",
+ heroNow:"Sea conditions now —", loading:"Loading…", msgLoading:"Getting sea data…",
+ wind:"🌬️ Wind", wave:"🌊 Waves", water:"🌡️ Water", rain:"☔ Rain",
+ lvG:"GOOD", lvC:"CAUTION", lvB:"DO NOT GO TO SEA",
+ mG:"Conditions are calm for your boat. Still check the weather at your location before leaving.",
+ mC:"Wind or waves are rising. Don't go far and stay close to the shore.",
+ mB:"Conditions are dangerous for this boat. Wait until the weather settles.",
+ noWave:"No wave data for this location; the assessment is based on wind only.",
+ errTitle:"No data available", errMsg:"Check your internet, then tap “Refresh”.",
+ timesTitle:"⏱️ Best times today", hourlyTitle:"🕐 Hour by hour (24 h)",
+ lbG:"Good", lbC:"Caution", lbB:"Don't go", lbBad:"Bad",
+ noneShort:"No safe time",
+ over:"Today's fishing hours (05:00–18:00) are over. See tomorrow's forecast.",
+ noSafe:"No safe time today", noSafeSub:"Wind or waves are above the limit for your boat type.",
+ longest:"Longest safe window ({n} hours)", hoursLbl:"Hours:",
+ fcTitle:"📅 3-day forecast", today:"Today", tomorrow:"Tomorrow",
+ distTitle:"🚤 Recommended distance", distAbout:"About {x} miles", dFoolfe:"60 kW and above",
+ freeTitle:"🎁 3 MONTHS FREE", freeText:"Register and use the fishing service free for 3 months.",
+ regBtn:"Register for free", loginBtn:"Already registered? Log in",
+ accTitle:"👤 My account", accNone:"You don't have an account yet. Tap “Register for free” to start.",
+ welcome:"👋 Welcome {name}", freeLeft:"Your 3 free months are active.", timeLeft:"Time left:", daysFmt:"{d} days",
+ endSoon:"⏳ They are about to end.", chooseP:"Choose Premium so you don't lose access.", payEarly:"💚 Pay for Premium early",
+ expired:"🔒 Your 3 free months have ended.", expiredSub:"Choose Premium to keep using the service.",
+ premTitle:"💚 Kalluumeysato Premium", premText:"Live alerts, detailed data and fishing reports.",
+ price:"$1 / month", payVia:"Payment is made via EVCPlus (Somalia).", payBtn:"💳 Pay with EVCPlus",
+ adTitle:"📢 Your ad could appear here", adText:"“Get all your fishing gear in one place!”", adSub:"The ad space can be bought by businesses.",
+ f1:"Kalluumeysato © 2026",
+ f2:"Data: Open-Meteo (marine and weather forecasts). This is guidance only and does not replace your own judgment and experience.",
+ f3:"If the weather turns bad, come back from the sea.", close:"Close",
+ regTitle:"🎁 Register", regIntro:"Start <b>3 free months</b>.",
+ regPriv:"Your name and number are used only for your account and the service.",
+ pName:"Your name", pPhone:"Phone number", pPin:"PIN (4–6 digits)", pPin2:"Repeat PIN", regGo:"Register and Start",
+ regErr:"Please enter your name, a valid number and a 4–6 digit PIN; both PINs must match.",
+ already:"⚠️ This number is already registered.", numLbl:"Number:", noRestart:"The 3 free months cannot be started again.", loginOld:"Log in to your existing account",
+ regFail:"Registration failed. Check your internet and try again.",
+ regOk:"✅ You are registered!", regOkSub:"Welcome {name}. Your 3 free months have now started.",
+ loginTitle:"🔐 Log in", pPinLogin:"Your PIN", loginGo:"Log in", loggedIn:"✅ You are logged in.", loginBad:"Wrong number or PIN.",
+ payTitle:"💚 Pay with EVCPlus", payAmt:"Premium price: <b>$1 / month</b>", pEvc:"Your EVCPlus number", prepBtn:"📱 Prepare the code",
+ evcBad:"Please enter your EVCPlus number correctly.", codeReady:"📱 The code is ready.",
+ codeSub:"Tap the button below. If it doesn't open, type the code by hand in the phone dialer.", openDialer:"Open the phone dialer"
+},
+ar:{
+ h1:"🌊 دليل الصيادين للبحر", title:"كالومَيساتو — دليل الصيادين للبحر",
+ sub:"تحقق من حالة البحر قبل أن تنزل إلى البحر.",
+ navStatus:"🌊 الحالة", navTimes:"⏱️ الأوقات", navForecast:"📅 التوقعات", navPlace:"📍 الموقع", navAccount:"👤 الحساب", navPremium:"💚 Premium",
+ instTitle:"📲 أضف إلى شاشة هاتفك", instSub:"لتفتحه في أي وقت دون البحث عن الرابط.", instBtn:"أضف إلى الشاشة الرئيسية",
+ instHelp:"اضغط <b>⋮</b> (أعلى اليمين في Chrome) ثم اختر <b>Add to Home screen</b> أو <b>Install app</b>.<br><small>iPhone (Safari): اضغط <b>Share</b> ثم <b>Add to Home Screen</b>.</small>",
+ locTitle:"📍 اختر موقعك", refresh:"🔄 تحديث", unitLbl:"وحدة الرياح",
+ gSom:"🇸🇴 الصومال", gSl:"🏴 أرض الصومال", gKe:"🇰🇪 كينيا", gTz:"🇹🇿 تنزانيا", gDj:"🇩🇯 جيبوتي", gEr:"🇪🇷 إريتريا", gYe:"🇾🇪 اليمن", gOth:"🌍 أخرى",
+ gps:"📡 موقعي الحالي (GPS)", gpsShort:"موقعي (GPS)", gpsWait:"جارٍ تحديد موقعك…", gpsErr:"تعذر تحديد موقعك. اسمح بـ GPS أو اختر مدينة.",
+ updating:"جارٍ التحديث…", updated:"آخر تحديث:", src:"المصدر: Open-Meteo", noData:"تعذر تحميل البيانات",
+ boatsTitle:"🚤 نوع قاربك", boatNote:"يعتمد التحذير على نوع القارب: القارب الصغير قد يتعرض للخطر حتى مع الأمواج الصغيرة.",
+ windShort:"الرياح", waveShort:"الأمواج", upTo:"حتى",
+ bHuuri:"قارب صغير (هوري)", bD15:"قارب 15 كيلوواط", bD60:"قارب 60 كيلوواط", bFoolfe:"قارب كبير (فولفي)",
+ heroNow:"حالة البحر الآن —", loading:"جارٍ التحميل…", msgLoading:"جارٍ جلب بيانات البحر…",
+ wind:"🌬️ الرياح", wave:"🌊 الأمواج", water:"🌡️ الماء", rain:"☔ المطر",
+ lvG:"جيدة", lvC:"احذر", lvB:"لا تنزل إلى البحر",
+ mG:"الحالة هادئة لقاربك. ومع ذلك تحقق من الطقس في موقعك قبل المغادرة.",
+ mC:"الرياح أو الأمواج في ازدياد. لا تبتعد وابقَ قريباً من الشاطئ.",
+ mB:"الحالة خطرة على هذا القارب. انتظر حتى يهدأ الطقس.",
+ noWave:"لا تتوفر بيانات الأمواج لهذا الموقع؛ التقييم يعتمد على الرياح فقط.",
+ errTitle:"لا توجد بيانات", errMsg:"تحقق من الإنترنت ثم اضغط «تحديث».",
+ timesTitle:"⏱️ أفضل الأوقات اليوم", hourlyTitle:"🕐 الحالة كل ساعة (24 ساعة)",
+ lbG:"جيدة", lbC:"احذر", lbB:"لا تنزل", lbBad:"سيئة",
+ noneShort:"لا يوجد وقت آمن",
+ over:"انتهت أوقات الصيد اليوم (05:00–18:00). راجع توقعات الغد.",
+ noSafe:"لا يوجد وقت آمن اليوم", noSafeSub:"الرياح أو الأمواج فوق حد نوع قاربك.",
+ longest:"أطول فترة آمنة ({n} ساعات)", hoursLbl:"الساعات:",
+ fcTitle:"📅 توقعات 3 أيام", today:"اليوم", tomorrow:"غداً",
+ distTitle:"🚤 المسافة الموصى بها", distAbout:"حوالي {x} ميل", dFoolfe:"60 كيلوواط فأكثر",
+ freeTitle:"🎁 3 أشهر مجانًا", freeText:"سجّل واستخدم خدمة الصيد مجانًا لمدة 3 أشهر.",
+ regBtn:"سجّل مجانًا", loginBtn:"هل سجّلت من قبل؟ سجّل الدخول",
+ accTitle:"👤 حسابي", accNone:"ليس لديك حساب بعد. اضغط «سجّل مجانًا» للبدء.",
+ welcome:"👋 أهلاً {name}", freeLeft:"أشهرك الثلاثة المجانية سارية.", timeLeft:"الوقت المتبقي:", daysFmt:"{d} يومًا",
+ endSoon:"⏳ توشك على الانتهاء.", chooseP:"اختر Premium حتى لا تفقد الخدمة.", payEarly:"💚 ادفع اشتراك Premium مقدماً",
+ expired:"🔒 انتهت الأشهر الثلاثة المجانية.", expiredSub:"اختر Premium لمواصلة استخدام الخدمة.",
+ premTitle:"💚 Kalluumeysato Premium", premText:"تنبيهات مباشرة وبيانات مفصلة وتقارير صيد.",
+ price:"$1 / شهر", payVia:"يتم الدفع عبر EVCPlus (الصومال).", payBtn:"💳 ادفع عبر EVCPlus",
+ adTitle:"📢 إعلانك يمكن أن يظهر هنا", adText:"«كل معدات الصيد في مكان واحد!»", adSub:"يمكن للتجار شراء مساحة الإعلان.",
+ f1:"Kalluumeysato © 2026",
+ f2:"البيانات: Open-Meteo (توقعات بحرية وجوية). هذه إرشادات فقط ولا تحل محل قرارك وخبرتك.",
+ f3:"إذا ساء الطقس فعد من البحر.", close:"إغلاق",
+ regTitle:"🎁 التسجيل", regIntro:"ابدأ <b>3 أشهر مجانية</b>.",
+ regPriv:"يُستخدم اسمك ورقمك لحسابك والخدمة فقط.",
+ pName:"اسمك", pPhone:"رقم الهاتف", pPin:"PIN (4–6 أرقام)", pPin2:"أعد إدخال PIN", regGo:"سجّل وابدأ",
+ regErr:"يرجى إدخال اسمك ورقم صحيح ورمز PIN من 4–6 أرقام، ويجب أن يتطابق الرمزان.",
+ already:"⚠️ هذا الرقم مسجل بالفعل.", numLbl:"الرقم:", noRestart:"لا يمكن بدء الأشهر الثلاثة المجانية مرة أخرى.", loginOld:"سجّل الدخول إلى حسابك السابق",
+ regFail:"فشل التسجيل. تحقق من الإنترنت وحاول مرة أخرى.",
+ regOk:"✅ تم تسجيلك!", regOkSub:"أهلاً {name}. بدأت الآن أشهرك الثلاثة المجانية.",
+ loginTitle:"🔐 تسجيل الدخول", pPinLogin:"رمز PIN الخاص بك", loginGo:"دخول", loggedIn:"✅ تم تسجيل الدخول.", loginBad:"الرقم أو PIN غير صحيح.",
+ payTitle:"💚 الدفع عبر EVCPlus", payAmt:"سعر Premium: <b>$1 / شهر</b>", pEvc:"رقم EVCPlus الخاص بك", prepBtn:"📱 جهّز الرمز",
+ evcBad:"يرجى إدخال رقم EVCPlus بشكل صحيح.", codeReady:"📱 الرمز جاهز.",
+ codeSub:"اضغط الزر أدناه. إذا لم يفتح، اكتب الرمز يدوياً في تطبيق الاتصال.", openDialer:"افتح تطبيق الاتصال"
+},
+sw:{
+ h1:"🌊 Mwongozo wa Wavuvi wa Baharini", title:"Kalluumeysato — Mwongozo wa Wavuvi wa Baharini",
+ sub:"Angalia hali ya bahari kabla ya kwenda baharini.",
+ navStatus:"🌊 Hali", navTimes:"⏱️ Nyakati", navForecast:"📅 Utabiri", navPlace:"📍 Eneo", navAccount:"👤 Akaunti", navPremium:"💚 Premium",
+ instTitle:"📲 Weka kwenye skrini ya simu yako", instSub:"Ili uifungue wakati wowote bila kutafuta kiungo.", instBtn:"Weka kwenye skrini ya mwanzo",
+ instHelp:"Gusa <b>⋮</b> (juu kulia kwenye Chrome), kisha chagua <b>Add to Home screen</b> au <b>Install app</b>.<br><small>iPhone (Safari): gusa <b>Share</b>, kisha <b>Add to Home Screen</b>.</small>",
+ locTitle:"📍 Chagua eneo lako", refresh:"🔄 Onyesha upya", unitLbl:"Kipimo cha upepo",
+ gSom:"🇸🇴 Somalia", gSl:"🏴 Somaliland", gKe:"🇰🇪 Kenya", gTz:"🇹🇿 Tanzania", gDj:"🇩🇯 Djibouti", gEr:"🇪🇷 Eritrea", gYe:"🇾🇪 Yemen", gOth:"🌍 Nyingine",
+ gps:"📡 Eneo langu la sasa (GPS)", gpsShort:"Eneo langu (GPS)", gpsWait:"Inatafuta eneo lako…", gpsErr:"Imeshindwa kupata eneo lako. Ruhusu GPS au chagua mji.",
+ updating:"Inasasisha…", updated:"Imesasishwa:", src:"Chanzo: Open-Meteo", noData:"Imeshindwa kupakia data",
+ boatsTitle:"🚤 Aina ya mashua yako", boatNote:"Onyo hutegemea aina ya mashua: mashua ndogo inaweza kuwa hatarini hata kwa mawimbi madogo.",
+ windShort:"Upepo", waveShort:"Mawimbi", upTo:"hadi",
+ bHuuri:"Mtumbwi mdogo (Huuri)", bD15:"Mashua ya 15 kW", bD60:"Mashua ya 60 kW", bFoolfe:"Mashua kubwa (Foolfe)",
+ heroNow:"Hali ya bahari sasa —", loading:"Inapakia…", msgLoading:"Inapata data ya bahari…",
+ wind:"🌬️ Upepo", wave:"🌊 Mawimbi", water:"🌡️ Maji", rain:"☔ Mvua",
+ lvG:"NZURI", lvC:"TAHADHARI", lvB:"USIENDE BAHARINI",
+ mG:"Hali ni shwari kwa mashua yako. Bado angalia hali ya hewa ya eneo lako kabla ya kuondoka.",
+ mC:"Upepo au mawimbi yanaongezeka. Usiende mbali na kaa karibu na pwani.",
+ mB:"Hali ni hatari kwa mashua hii. Subiri hadi hali ya hewa itulie.",
+ noWave:"Hakuna data ya mawimbi kwa eneo hili; tathmini inatokana na upepo pekee.",
+ errTitle:"Hakuna data", errMsg:"Angalia intaneti, kisha gusa “Onyesha upya”.",
+ timesTitle:"⏱️ Nyakati bora leo", hourlyTitle:"🕐 Saa kwa saa (saa 24)",
+ lbG:"Nzuri", lbC:"Tahadhari", lbB:"Usiende", lbBad:"Mbaya",
+ noneShort:"Hakuna wakati salama",
+ over:"Saa za uvuvi za leo (05:00–18:00) zimeisha. Angalia utabiri wa kesho.",
+ noSafe:"Hakuna wakati salama leo", noSafeSub:"Upepo au mawimbi yako juu ya kikomo cha aina ya mashua yako.",
+ longest:"Kipindi kirefu zaidi salama (saa {n})", hoursLbl:"Saa:",
+ fcTitle:"📅 Utabiri wa siku 3", today:"Leo", tomorrow:"Kesho",
+ distTitle:"🚤 Umbali unaopendekezwa", distAbout:"Takriban maili {x}", dFoolfe:"60 kW na zaidi",
+ freeTitle:"🎁 MIEZI 3 BURE", freeText:"Jisajili na utumie huduma ya uvuvi bure kwa miezi 3.",
+ regBtn:"Jisajili bure", loginBtn:"Umeshajisajili? Ingia",
+ accTitle:"👤 Akaunti yangu", accNone:"Bado huna akaunti. Gusa “Jisajili bure” ili uanze.",
+ welcome:"👋 Karibu {name}", freeLeft:"Miezi yako 3 ya bure inaendelea.", timeLeft:"Muda uliobaki:", daysFmt:"siku {d}",
+ endSoon:"⏳ Inakaribia kuisha.", chooseP:"Chagua Premium ili usipoteze huduma.", payEarly:"💚 Lipia Premium mapema",
+ expired:"🔒 Miezi 3 ya bure imeisha.", expiredSub:"Chagua Premium ili kuendelea kutumia huduma.",
+ premTitle:"💚 Kalluumeysato Premium", premText:"Arifa za moja kwa moja, data ya kina na ripoti za uvuvi.",
+ price:"$1 / mwezi", payVia:"Malipo hufanywa kupitia EVCPlus (Somalia).", payBtn:"💳 Lipa kwa EVCPlus",
+ adTitle:"📢 Tangazo lako linaweza kuonekana hapa", adText:"“Pata vifaa vyako vyote vya uvuvi mahali pamoja!”", adSub:"Nafasi ya tangazo inaweza kununuliwa na wafanyabiashara.",
+ f1:"Kalluumeysato © 2026",
+ f2:"Data: Open-Meteo (utabiri wa bahari na hali ya hewa). Ni mwongozo tu, hauchukui nafasi ya uamuzi na uzoefu wako.",
+ f3:"Hali ya hewa ikiwa mbaya, rudi kutoka baharini.", close:"Funga",
+ regTitle:"🎁 Jisajili", regIntro:"Anza <b>miezi 3 ya bure</b>.",
+ regPriv:"Jina na namba yako hutumika kwa akaunti na huduma pekee.",
+ pName:"Jina lako", pPhone:"Namba ya simu", pPin:"PIN (tarakimu 4–6)", pPin2:"Rudia PIN", regGo:"Jisajili na Uanze",
+ regErr:"Tafadhali weka jina, namba sahihi na PIN ya tarakimu 4–6; PIN zote mbili lazima zifanane.",
+ already:"⚠️ Namba hii imeshasajiliwa.", numLbl:"Namba:", noRestart:"Miezi 3 ya bure haiwezi kuanza tena.", loginOld:"Ingia kwenye akaunti yako ya awali",
+ regFail:"Usajili haukufanikiwa. Angalia intaneti na ujaribu tena.",
+ regOk:"✅ Umesajiliwa!", regOkSub:"Karibu {name}. Miezi yako 3 ya bure imeanza sasa.",
+ loginTitle:"🔐 Ingia", pPinLogin:"PIN yako", loginGo:"Ingia", loggedIn:"✅ Umeingia.", loginBad:"Namba au PIN si sahihi.",
+ payTitle:"💚 Lipa kwa EVCPlus", payAmt:"Bei ya Premium: <b>$1 / mwezi</b>", pEvc:"Namba yako ya EVCPlus", prepBtn:"📱 Andaa msimbo",
+ evcBad:"Tafadhali weka namba ya EVCPlus kwa usahihi.", codeReady:"📱 Msimbo uko tayari.",
+ codeSub:"Gusa kitufe hapa chini. Ikishindwa kufunguka, andika msimbo mwenyewe kwenye simu.", openDialer:"Fungua simu"
+}
+};
+
+function safeGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function safeSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+function detectLang(){
+  const n=(navigator.language||'').slice(0,2).toLowerCase();
+  if(n==='so'||n==='ar'||n==='sw')return n;
+  let tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}
+  if(tz==='Africa/Mogadishu')return 'so';
+  return n==='en'?'en':'so';
+}
+let lang=safeGet('k_lang');
+if(!I18N[lang])lang=detectLang();
+function t(k,v){
+  let s=I18N[lang]&&I18N[lang][k];
+  if(s==null)s=I18N.so[k];
+  if(s==null)return k;
+  if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);
+  return s;
+}
+
 /* ---------- Goobaha (qiyaas xeeb/badda u dhow) ---------- */
+const GROUPS=[
+ {k:'gSom',n:["Muqdisho","Afgooye","Marka","Baraawe","Kismaayo","Jamaame","Badhaadhe","Hobyo","Xarardheere","Eyl","Garacad","Bandarbeyla","Qardho","Boosaaso","Caluula","Qandala","Lasqoray"]},
+ {k:'gSl',n:["Hargeysa","Berbera","Saylac","Lughaya","Maydh","Laasqoray","Xiis","Ceel Sheekh"]},
+ {k:'gKe',n:["Mombasa","Malindi","Lamu","Kilifi","Kipini"]},
+ {k:'gTz',n:["Dar es Salaam","Zanzibar","Tanga","Mtwara","Kilwa"]},
+ {k:'gDj',n:["Djibouti","Tadjoura","Obock"]},
+ {k:'gEr',n:["Massawa","Assab"]},
+ {k:'gYe',n:["Aden","Mukalla","Hodeidah","Mocha","Socotra"]},
+ {k:'gOth',n:["Port Sudan","Salalah","Muscat","Jeddah","Beira","Nacala"]}
+];
 const LOC={
 "Muqdisho":[2.05,45.45],"Afgooye":[2.0,45.5],"Marka":[1.7,44.95],"Baraawe":[1.0,44.2],
 "Kismaayo":[-0.45,42.65],"Jamaame":[-0.2,42.85],"Badhaadhe":[-1.3,41.5],"Hobyo":[5.35,48.7],
 "Xarardheere":[4.65,48.1],"Eyl":[8.0,50.0],"Garacad":[6.1,49.2],"Bandarbeyla":[9.5,51.0],
 "Qardho":[9.6,51.0],"Boosaaso":[11.5,49.2],"Caluula":[12.1,50.9],"Qandala":[11.6,49.9],
 "Lasqoray":[11.4,48.3],"Hargeysa":[10.55,45.0],"Berbera":[10.55,45.0],"Saylac":[11.5,43.5],
-"Lughaya":[10.85,44.9],"Maydh":[11.2,47.1],"Laasqoray":[11.4,48.3],"Xiis":[11.2,48.4],"Ceel Sheekh":[10.9,46.2]
+"Lughaya":[10.85,44.9],"Maydh":[11.2,47.1],"Laasqoray":[11.4,48.3],"Xiis":[11.2,48.4],"Ceel Sheekh":[10.9,46.2],
+"Mombasa":[-4.05,39.75],"Malindi":[-3.2,40.2],"Lamu":[-2.25,41.0],"Kilifi":[-3.6,39.95],"Kipini":[-2.52,40.55],
+"Dar es Salaam":[-6.8,39.4],"Zanzibar":[-6.15,39.3],"Tanga":[-5.1,39.2],"Mtwara":[-10.3,40.3],"Kilwa":[-8.95,39.6],
+"Djibouti":[11.6,43.2],"Tadjoura":[11.85,43.0],"Obock":[12.0,43.3],
+"Massawa":[15.6,39.6],"Assab":[13.0,42.9],
+"Aden":[12.7,45.0],"Mukalla":[14.5,49.2],"Hodeidah":[14.8,42.8],"Mocha":[13.3,43.2],"Socotra":[12.6,54.0],
+"Port Sudan":[19.6,37.3],"Salalah":[16.9,54.1],"Muscat":[23.7,58.7],"Jeddah":[21.5,39.0],"Beira":[-19.9,34.95],"Nacala":[-14.5,40.8]
 };
-/* Xadka nabdoon ee nooc kasta: [dabayl km/s, hirar m] */
+const AR={
+"Muqdisho":"مقديشو","Afgooye":"أفجوي","Marka":"مركة","Baraawe":"براوة","Kismaayo":"كيسمايو","Jamaame":"جمامة","Badhaadhe":"بادهادي","Hobyo":"هوبيو",
+"Xarardheere":"هارارديري","Eyl":"إيل","Garacad":"غاراكاد","Bandarbeyla":"بندر بيلا","Qardho":"قردو","Boosaaso":"بوصاصو","Caluula":"علولة","Qandala":"قندلة","Lasqoray":"لاسقوري",
+"Hargeysa":"هرجيسا","Berbera":"بربرة","Saylac":"زيلع","Lughaya":"لوغاية","Maydh":"ميد","Laasqoray":"لاسقوري","Xiis":"هيس","Ceel Sheekh":"عيل شيخ",
+"Mombasa":"مومباسا","Malindi":"ماليندي","Lamu":"لامو","Kilifi":"كيليفي","Kipini":"كيبيني",
+"Dar es Salaam":"دار السلام","Zanzibar":"زنجبار","Tanga":"تانغا","Mtwara":"متوارا","Kilwa":"كيلوا",
+"Djibouti":"جيبوتي","Tadjoura":"تاجورة","Obock":"أوبوك","Massawa":"مصوع","Assab":"عصب",
+"Aden":"عدن","Mukalla":"المكلا","Hodeidah":"الحديدة","Mocha":"المخا","Socotra":"سقطرى",
+"Port Sudan":"بورتسودان","Salalah":"صلالة","Muscat":"مسقط","Jeddah":"جدة","Beira":"بيرا","Nacala":"نكالا"
+};
+/* Xadka nabdoon ee nooc kasta: [dabayl km/h, hirar m] */
 const BOATS={
- huuri:{n:"Huuri / Alwax",i:"🛶",w:15,h:0.6},
- d15:{n:"Doon 15 kW",i:"🚤",w:22,h:1.2},
- d60:{n:"Doon 60 kW",i:"⛵",w:30,h:2.0},
- foolfe:{n:"Foolfe",i:"🚢",w:38,h:2.8}
+ huuri:{nk:"bHuuri",i:"🛶",w:15,h:0.6},
+ d15:{nk:"bD15",i:"🚤",w:22,h:1.2},
+ d60:{nk:"bD60",i:"⛵",w:30,h:2.0},
+ foolfe:{nk:"bFoolfe",i:"🚢",w:38,h:2.8}
 };
-let boat=localStorage.getItem('k_boat')||'d15';
-let DATA=null;
+let boat=safeGet('k_boat');
+if(!BOATS[boat])boat='d15';
+let unit=safeGet('k_unit')==='kn'?'kn':'kmh';
+let DATA=null, ERR=false;
+function fw(v){return unit==='kn'?Math.round(v*0.539957)+' kn':Math.round(v)+' km/h'}
+function placeLabel(p){if(p==='__gps__')return t('gpsShort');return lang==='ar'&&AR[p]?AR[p]:p}
 
 /* ---------- Backend (Supabase) — halkan geli furayaasha ---------- */
 const SB_URL='https://gulppywsmtbkktqnxljf.supabase.co';
@@ -248,8 +512,40 @@ function track(type,extra){
 
 const $=id=>document.getElementById(id);
 function go(id){$(id).scrollIntoView({behavior:'smooth'})}
-function safeGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
-function safeSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+/* ---------- Luqadda: codsashada ---------- */
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+  document.title=t('title');
+  document.querySelectorAll('[data-i18n]').forEach(e=>{e.textContent=t(e.getAttribute('data-i18n'))});
+  document.querySelectorAll('[data-i18n-html]').forEach(e=>{e.innerHTML=t(e.getAttribute('data-i18n-html'))});
+  $('legend').innerHTML='<span class="l0">🟢 '+t('lbG')+'</span><span class="l1">🟡 '+t('lbC')+'</span><span class="l2">🔴 '+t('lbB')+'</span>';
+  $('langSelect').value=lang;
+  $('unitSelect').value=unit;
+  if(!DATA&&!ERR){
+    $('hTitle').textContent=t('loading');
+    $('hMsg').textContent=t('msgLoading');
+    $('windows').innerHTML='<small>'+t('loading')+'</small>';
+  }
+}
+function buildLocations(){
+  const sel=$('locationSelect');
+  const cur=sel.value||'Marka';
+  let h='<option value="__gps__">'+esc(t('gps'))+'</option>';
+  GROUPS.forEach(g=>{h+='<optgroup label="'+esc(t(g.k))+'">'+g.n.map(n=>'<option value="'+esc(n)+'">'+esc(placeLabel(n))+'</option>').join('')+'</optgroup>'});
+  sel.innerHTML=h;
+  sel.value=cur;
+  if(sel.value!==cur)sel.value='Marka';
+}
+function setLang(l){
+  if(!I18N[l])return;
+  lang=l;safeSet('k_lang',l);
+  applyLang();buildLocations();renderBoats();renderDist();loadAccount();
+  if(DATA)render();else if(ERR)showError();
+}
+function setUnit(u){unit=u==='kn'?'kn':'kmh';safeSet('k_unit',unit);renderBoats();if(DATA)render()}
 
 /* ---------- Qiimeynta xaaladda ---------- */
 function level(wind,wave,gust){
@@ -259,26 +555,28 @@ function level(wind,wave,gust){
   if(wind>b.w||wave>b.h||g>b.w*1.35) return 1;
   return 0;
 }
-const LV=[
- {cls:"",ic:"🟢",t:"WANAAGSAN",m:"Xaaladdu way deggan tahay doontaada. Weli ka hubi cimilada goobtaada ka hor intaadan bixin."},
- {cls:"warn",ic:"🟡",t:"TAXADDAR",m:"Dabayl ama hirar ayaa kor u kacaya. Ha fogaan, deeqna u ag fadhiiso xeebta."},
- {cls:"bad",ic:"🔴",t:"HA GELIN BADDA",m:"Xaaladdu waa halis doontan. Sug ilaa cimiladu deggan tahay."}
-];
+function LVL(i){
+  return [
+   {cls:"",ic:"🟢",t:t('lvG'),m:t('mG')},
+   {cls:"warn",ic:"🟡",t:t('lvC'),m:t('mC')},
+   {cls:"bad",ic:"🔴",t:t('lvB'),m:t('mB')}
+  ][i];
+}
 
 /* ---------- Soo qaadista xogta dhabta ah ---------- */
 async function loadData(force){
   const place=$('locationSelect').value;
   const [lat,lon]=LOC[place]||LOC["Marka"];
-  $('hPlace').textContent=place;
-  $('updated').textContent="Waa la cusboonaysiinayaa…";
-  const ck='k_cache_'+place;
+  $('hPlace').textContent=placeLabel(place);
+  $('updated').textContent=t('updating');
+  const ck='k_cache_'+place+(place==='__gps__'?'_'+lat+','+lon:'');
   try{
     const f='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&hourly=wind_speed_10m,wind_gusts_10m,precipitation_probability&wind_speed_unit=kmh&timezone=auto&forecast_days=4';
     const m='https://marine-api.open-meteo.com/v1/marine?latitude='+lat+'&longitude='+lon+'&hourly=wave_height,sea_surface_temperature&timezone=auto&forecast_days=4';
     const [a,b]=await Promise.all([fetch(f).then(r=>{if(!r.ok)throw 0;return r.json()}),fetch(m).then(r=>r.ok?r.json():null).catch(()=>null)]);
     const h=a.hourly, mh=b&&b.hourly?b.hourly:{};
-    const rows=h.time.map((t,i)=>({
-      t, wind:h.wind_speed_10m[i], gust:h.wind_gusts_10m[i], rain:h.precipitation_probability[i],
+    const rows=h.time.map((tt,i)=>({
+      t:tt, wind:h.wind_speed_10m[i], gust:h.wind_gusts_10m[i], rain:h.precipitation_probability[i],
       wave:mh.wave_height?mh.wave_height[i]:null, sst:mh.sea_surface_temperature?mh.sea_surface_temperature[i]:null
     }));
     DATA={place,rows,ts:Date.now(),hasWave:!!mh.wave_height};
@@ -288,18 +586,24 @@ async function loadData(force){
     if(c){try{DATA=JSON.parse(c)}catch(_){}}
     if(!DATA||DATA.place!==place){DATA=null;showError();return}
   }
+  ERR=false;
   render();
 }
 function showError(){
+  ERR=true;
   $('xaalad').classList.remove('skel');
-  $('hBadge').textContent="📡";$('hTitle').textContent="Xog lama helin";
-  $('hMsg').textContent="Internet-ka hubi, kadibna riix “Cusboonaysii”.";
-  $('updated').textContent="Xogta lama soo qaadi karin";
+  $('hBadge').textContent="📡";$('hTitle').textContent=t('errTitle');
+  $('hMsg').textContent=t('errMsg');
+  $('updated').textContent=t('noData');
 }
 
 /* ---------- Muujinta ---------- */
-function fmtH(t){return t.slice(11,16)}
-function dayName(d){return ["Axad","Isniin","Talaado","Arbaco","Khamiis","Jimce","Sabti"][d.getDay()]}
+function fmtH(tt){return tt.slice(11,16)}
+const DAYS_SO=["Axad","Isniin","Talaado","Arbaco","Khamiis","Jimce","Sabti"];
+function dayName(d){
+  if(lang==='so')return DAYS_SO[d.getDay()];
+  try{return d.toLocaleDateString(LOCALE[lang],{weekday:'long'})}catch(e){return DAYS_SO[d.getDay()]}
+}
 function render(){
   if(!DATA)return;
   const rows=DATA.rows;
@@ -307,27 +611,29 @@ function render(){
   const now=Date.now();
   let idx=rows.findIndex(r=>new Date(r.t).getTime()>=now-1800000);
   if(idx<0)idx=0;
-  // time-zone-ka goobta: Open-Meteo wuxuu siiyaa waqti maxalli ah (Soomaaliya UTC+3)
+  // time-zone-ka goobta: Open-Meteo wuxuu siiyaa waqti maxalli ah
   const cur=rows[idx];
   const L=level(cur.wind,cur.wave??0,cur.gust);
+  const LVx=LVL(L);
   const hero=$('xaalad');
   hero.classList.remove('skel','warn','bad');
-  if(LV[L].cls)hero.classList.add(LV[L].cls);
-  $('hBadge').textContent=LV[L].ic;
-  $('hTitle').textContent=LV[L].t;
-  $('hMsg').innerHTML=LV[L].m+(DATA.hasWave?'':'<br><small>Xogta hirarka goobtan laguma helin; qiimeyntu waxay ku saleysan tahay dabaysha.</small>');
-  $('sWind').textContent=Math.round(cur.wind)+' km/s';
+  if(LVx.cls)hero.classList.add(LVx.cls);
+  $('hPlace').textContent=placeLabel(DATA.place);
+  $('hBadge').textContent=LVx.ic;
+  $('hTitle').textContent=LVx.t;
+  $('hMsg').innerHTML=LVx.m+(DATA.hasWave?'':'<br><small>'+t('noWave')+'</small>');
+  $('sWind').textContent=fw(cur.wind);
   $('sWave').textContent=cur.wave!=null?cur.wave.toFixed(1)+' m':'—';
   $('sTemp').textContent=cur.sst!=null?Math.round(cur.sst)+'°C':'—';
   $('sRain').textContent=(cur.rain??0)+'%';
-  $('updated').textContent='Cusboonaysiin: '+new Date(DATA.ts).toLocaleTimeString('so',{hour:'2-digit',minute:'2-digit'})+' · Ilo: Open-Meteo';
+  $('updated').textContent=t('updated')+' '+new Date(DATA.ts).toLocaleTimeString(LOCALE[lang],{hour:'2-digit',minute:'2-digit'})+' · '+t('src');
 
   // 24 saac
   const next=rows.slice(idx,idx+24);
-  const LB=['Wanaagsan','Taxaddar','Ha gelin'],IC=['🟢','🟡','🔴'];
+  const LB=[t('lbG'),t('lbC'),t('lbB')],IC=['🟢','🟡','🔴'];
   $('chart').innerHTML=next.map(r=>{
     const l=level(r.wind,r.wave??0,r.gust);
-    return '<div class="hr '+['','warn','bad'][l]+'"><div class="tm">'+fmtH(r.t)+'</div><div class="ic">'+IC[l]+'</div><div class="lb">'+LB[l]+'</div><div class="dt">🌬️ '+Math.round(r.wind)+' km/s'+(r.wave!=null?'<br>🌊 '+r.wave.toFixed(1)+' m':'')+'</div></div>';
+    return '<div class="hr '+['','warn','bad'][l]+'"><div class="tm">'+fmtH(r.t)+'</div><div class="ic">'+IC[l]+'</div><div class="lb">'+LB[l]+'</div><div class="dt">🌬️ '+fw(r.wind)+(r.wave!=null?'<br>🌊 '+r.wave.toFixed(1)+' m':'')+'</div></div>';
   }).join('');
 
   // waqtiyada ugu fiican maanta (05:00–18:00 xaggaas oo hadda ka dambeeya)
@@ -341,18 +647,18 @@ function render(){
     const rs=rows.filter(r=>r.t.startsWith(d)&&+r.t.slice(11,13)>=5&&+r.t.slice(11,13)<=18);
     if(!rs.length)return '';
     const lv=rs.map(r=>level(r.wind,r.wave??0,r.gust));
-    const worst=Math.max(...lv), good=lv.filter(x=>x===0).length;
-    const mw=Math.round(Math.max(...rs.map(r=>r.wind)));
+    const good=lv.filter(x=>x===0).length;
+    const mw=Math.max(...rs.map(r=>r.wind));
     const mh=DATA.hasWave?Math.max(...rs.map(r=>r.wave||0)).toFixed(1)+' m':'—';
-    const nm=i===0?'Maanta':i===1?'Berri':dayName(new Date(d+'T12:00'));
-    const lab=good>=8?'🟢 Wanaagsan':good>=4?'🟡 Taxaddar':'🔴 Xun';
+    const nm=i===0?t('today'):i===1?t('tomorrow'):dayName(new Date(d+'T12:00'));
+    const lab=good>=8?'🟢 '+t('lbG'):good>=4?'🟡 '+t('lbC'):'🔴 '+t('lbBad');
     const bw=bestWindows(rs,true);
-    return '<div class="day"><div class="d">'+nm+'</div><div>'+lab+'</div><small>🌬️ ilaa '+mw+' km/s · 🌊 ilaa '+mh+'</small><br><small>'+bw+'</small></div>';
+    return '<div class="day"><div class="d">'+nm+'</div><div>'+lab+'</div><small>🌬️ '+t('upTo')+' '+fw(mw)+' · 🌊 '+t('upTo')+' '+mh+'</small><br><small>'+bw+'</small></div>';
   }).join('');
 }
 
 function bestWindows(rs,short){
-  if(!rs.length)return short?'—':'<div class="win warn"><div>🌙</div><div>Maanta waqtiyada kalluumeysiga (05:00–18:00) way dhammaadeen. Eeg saadaasha berri.</div></div>';
+  if(!rs.length)return short?'—':'<div class="win warn"><div>🌙</div><div>'+t('over')+'</div></div>';
   // ka dhex raadi xilliyada isku xigta ee nabdoon
   let best=null,cur=null;
   rs.forEach(r=>{
@@ -361,22 +667,46 @@ function bestWindows(rs,short){
     else cur=null;
   });
   if(!best){
-    return short?'Ma jiro waqti nabdoon':'<div class="win bad"><div>🔴</div><div><div class="t">Ma jiro waqti nabdoon maanta</div><div class="mut">Dabaysha ama hirarku way ka sarreeyaan xadka nooca doontaada.</div></div></div>';
+    return short?t('noneShort'):'<div class="win bad"><div>🔴</div><div><div class="t">'+t('noSafe')+'</div><div class="mut">'+t('noSafeSub')+'</div></div></div>';
   }
   const endH=String((+best.e.slice(11,13)+1)%24).padStart(2,'0')+':00';
   const txt=fmtH(best.s)+' – '+endH;
   if(short)return '⏰ '+txt;
   const warnHrs=rs.filter(r=>level(r.wind,r.wave??0,r.gust)===1).map(r=>fmtH(r.t));
-  let html='<div class="win"><div style="font-size:26px">🟢</div><div><div class="t">'+txt+'</div><div class="mut">Waqtiga ugu dheer ee nabdoon ('+best.n+' saacadood)</div></div></div>';
-  if(warnHrs.length)html+='<div class="win warn"><div style="font-size:26px">🟡</div><div><div class="t">Taxaddar</div><div class="mut">Saacadaha: '+warnHrs.slice(0,6).join(', ')+(warnHrs.length>6?'…':'')+'</div></div></div>';
+  let html='<div class="win"><div style="font-size:26px">🟢</div><div><div class="t">'+txt+'</div><div class="mut">'+t('longest',{n:best.n})+'</div></div></div>';
+  if(warnHrs.length)html+='<div class="win warn"><div style="font-size:26px">🟡</div><div><div class="t">'+t('lbC')+'</div><div class="mut">'+t('hoursLbl')+' '+warnHrs.slice(0,6).join(', ')+(warnHrs.length>6?'…':'')+'</div></div></div>';
   return html;
 }
 
 function renderBoats(){
-  $('boats').innerHTML=Object.entries(BOATS).map(([k,b])=>'<button class="boat '+(k===boat?'on':'')+'" onclick="setBoat(\''+k+'\')"><b>'+b.i+' '+b.n+'</b><small>Dabayl ≤ '+b.w+' km/s · Hirar ≤ '+b.h+' m</small></button>').join('');
+  $('boats').innerHTML=Object.entries(BOATS).map(([k,b])=>'<button class="boat '+(k===boat?'on':'')+'" onclick="setBoat(\''+k+'\')"><b>'+b.i+' '+t(b.nk)+'</b><small>'+t('windShort')+': '+t('upTo')+' '+fw(b.w)+' · '+t('waveShort')+': '+t('upTo')+' '+b.h+' m</small></button>').join('');
+}
+function renderDist(){
+  const rows=[['huuri','2–5'],['d15','1–7'],['d60','2–40+']];
+  $('dist').innerHTML=rows.map(([k,x])=>'<div class="stat"><b>'+t(BOATS[k].nk)+'</b><span>'+t('distAbout',{x:x})+'</span></div>').join('')+
+    '<div class="stat"><b>'+t('bFoolfe')+'</b><span>'+t('dFoolfe')+'</span></div>';
 }
 function setBoat(k){boat=k;safeSet('k_boat',k);renderBoats();render()}
-function changeLocation(){safeSet('k_goob',$('locationSelect').value);track('location');DATA=null;$('xaalad').classList.add('skel');loadData()}
+
+function changeLocation(){
+  const v=$('locationSelect').value;
+  if(v==='__gps__'){useGPS();return}
+  safeSet('k_goob',v);track('location');DATA=null;ERR=false;$('xaalad').classList.add('skel');loadData();
+}
+function useGPS(){
+  if(!navigator.geolocation){gpsFail();return}
+  $('updated').textContent=t('gpsWait');
+  navigator.geolocation.getCurrentPosition(p=>{
+    LOC.__gps__=[+p.coords.latitude.toFixed(2),+p.coords.longitude.toFixed(2)];
+    safeSet('k_gps',JSON.stringify(LOC.__gps__));safeSet('k_goob','__gps__');
+    track('location');DATA=null;ERR=false;$('xaalad').classList.add('skel');loadData();
+  },()=>gpsFail(),{timeout:12000,maximumAge:600000});
+}
+function gpsFail(){
+  const prev=safeGet('k_goob');
+  $('locationSelect').value=(prev&&LOC[prev])?prev:'Marka';
+  $('updated').textContent=t('gpsErr');
+}
 
 /* ---------- Akoonka (prototype) ---------- */
 function normalizePhone(v){return v.replace(/\D/g,'').replace(/^252/,'').replace(/^0/,'')}
@@ -386,7 +716,6 @@ async function hashPin(pin,phone){
     return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
   }catch(e){return btoa(phone+pin)}
 }
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 /* Qofka diiwaangashan: kaarka bilaashka waa la qariyaa, akoonka waa kor loo qaadaa,
    Premium wuxuu muuqdaa kaliya marka bilaashku dhow yahay inuu dhammaado (<=7 maalmood) ama dhammaaday. */
 function applyAccountLayout(state,days){
@@ -399,64 +728,64 @@ function applyAccountLayout(state,days){
 }
 function loadAccount(){
   const u=safeGet('kalluumeysi_user'); const el=$('accountStatus');
-  if(!u){applyAccountLayout('none');return;}
+  if(!u){el.textContent=t('accNone');applyAccountLayout('none');return;}
   try{
     const x=JSON.parse(u);
     const exp=new Date(x.started); exp.setMonth(exp.getMonth()+3);
     const rem=exp.getTime()-Date.now();
     if(rem>0){
       const d=Math.ceil(rem/86400000);
-      el.innerHTML='<div class="ok"><b>👋 Ku soo dhowow '+esc(x.name)+'</b><p style="margin:6px 0 0">3-da bilood ee bilaashka ah way kuu socdaan.</p><p style="margin:4px 0 0">Waqti ka haray: <b>'+d+' maalmood</b></p>'+(d<=7?'<p style="margin:6px 0 0"><b>⏳ Waxay dhowdahay inay dhammaadaan.</b> Dooro Premium si aadan u joojin.</p>':'')+'</div><button class="ghost" style="width:100%;margin-top:10px" onclick="openModal(\'pay\')">💚 Ku bixi Premium hore</button>';
+      el.innerHTML='<div class="ok"><b>'+t('welcome',{name:esc(x.name)})+'</b><p style="margin:6px 0 0">'+t('freeLeft')+'</p><p style="margin:4px 0 0">'+t('timeLeft')+' <b>'+t('daysFmt',{d:d})+'</b></p>'+(d<=7?'<p style="margin:6px 0 0"><b>'+t('endSoon')+'</b> '+t('chooseP')+'</p>':'')+'</div><button class="ghost" style="width:100%;margin-top:10px" onclick="openModal(\'pay\')">'+t('payEarly')+'</button>';
       applyAccountLayout('active',d);
     }else{
-      el.innerHTML='<div class="wr"><b>🔒 3-da bilood bilaashka ah way dhammaadeen.</b><p style="margin:6px 0 0">Dooro Premium si aad adeegga u sii isticmaasho.</p></div>';
+      el.innerHTML='<div class="wr"><b>'+t('expired')+'</b><p style="margin:6px 0 0">'+t('expiredSub')+'</p></div>';
       applyAccountLayout('expired',0);
     }
-  }catch(e){applyAccountLayout('none');}
+  }catch(e){el.textContent=t('accNone');applyAccountLayout('none');}
 }
 function openModal(type){
   $('modal').style.display='flex'; const c=$('mcontent');
   if(type==='register'){
-    $('mtitle').textContent='🎁 Isdiiwaangeli';
-    c.innerHTML='<p>Ku bilow <b>3 bilood oo bilaash ah</b>.</p><p style="font-size:12px;color:#5d7480">Magacaaga iyo lambarkaaga waxaa loo isticmaalaa akoonkaaga iyo adeegga kaliya.</p><input id="regName" placeholder="Magacaaga" autocomplete="name"><input id="regPhone" placeholder="Lambarka telefoonka" inputmode="tel"><input id="regPin" type="password" placeholder="PIN (4–6 lambar)" inputmode="numeric" maxlength="6"><input id="regPin2" type="password" placeholder="Ku celi PIN-ka" inputmode="numeric" maxlength="6"><button class="primary" onclick="registerUser()">Isdiiwaangeli oo Bilow</button><div id="regResult"></div>';
+    $('mtitle').textContent=t('regTitle');
+    c.innerHTML='<p>'+t('regIntro')+'</p><p style="font-size:12px;color:#5d7480">'+t('regPriv')+'</p><input id="regName" placeholder="'+esc(t('pName'))+'" autocomplete="name"><input id="regPhone" placeholder="'+esc(t('pPhone'))+'" inputmode="tel"><input id="regPin" type="password" placeholder="'+esc(t('pPin'))+'" inputmode="numeric" maxlength="6"><input id="regPin2" type="password" placeholder="'+esc(t('pPin2'))+'" inputmode="numeric" maxlength="6"><button class="primary" onclick="registerUser()">'+t('regGo')+'</button><div id="regResult"></div>';
   }else if(type==='login'){
     showLogin();
   }else{
-    $('mtitle').textContent='💚 Ku Bixi EVCPlus';
-    c.innerHTML='<p>Lacagta Premium: <b>$1 / bil</b></p><input id="payPhone" placeholder="Lambarka EVCPlus-kaaga" inputmode="tel"><div class="ussd" id="ussdCode">*712*NUMBER*1#</div><button class="primary" onclick="prepareEVC()">📱 Diyaari Code-ka</button><div id="payResult"></div>';
+    $('mtitle').textContent=t('payTitle');
+    c.innerHTML='<p>'+t('payAmt')+'</p><input id="payPhone" placeholder="'+esc(t('pEvc'))+'" inputmode="tel"><div class="ussd" id="ussdCode">*712*NUMBER*1#</div><button class="primary" onclick="prepareEVC()">'+t('prepBtn')+'</button><div id="payResult"></div>';
   }
 }
 async function registerUser(){
   const name=$('regName').value.trim(), phone=normalizePhone($('regPhone').value);
   const pin=$('regPin').value.trim(), pin2=$('regPin2').value.trim(), out=$('regResult');
   if(!name||phone.length<9||!/^\d{4,6}$/.test(pin)||pin!==pin2){
-    out.innerHTML='<p class="er">Fadlan geli magaca, number sax ah iyo PIN 4–6 lambar ah; labada PIN waa inay isku mid noqdaan.</p>';return;
+    out.innerHTML='<p class="er">'+t('regErr')+'</p>';return;
   }
   if(safeGet('kalluumeysi_registered_phone')===phone){
-    out.innerHTML='<div class="wr"><b>⚠️ Number-kan hore ayaa loo diiwaangeliyay.</b><p>Number: ******'+phone.slice(-4)+'</p><p>3-da bilood bilaashka ah mar labaad laguma bilaabi karo.</p><button class="primary" onclick="showLogin()">Geli Akoonka Hore</button></div>';return;
+    out.innerHTML='<div class="wr"><b>'+t('already')+'</b><p>'+t('numLbl')+' ******'+phone.slice(-4)+'</p><p>'+t('noRestart')+'</p><button class="primary" onclick="showLogin()">'+t('loginOld')+'</button></div>';return;
   }
   const ph=await hashPin(pin,phone);
   if(BACKEND){
     try{
       const r=await sb('users',{name:name,phone:phone,pin_hash:ph});
       if(r.status===409){
-        out.innerHTML='<div class="wr"><b>⚠️ Number-kan hore ayaa loo diiwaangeliyay.</b><p>3-da bilood bilaashka ah mar labaad laguma bilaabi karo.</p><button class="primary" onclick="showLogin()">Geli Akoonka Hore</button></div>';return;
+        out.innerHTML='<div class="wr"><b>'+t('already')+'</b><p>'+t('noRestart')+'</p><button class="primary" onclick="showLogin()">'+t('loginOld')+'</button></div>';return;
       }
       if(!r.ok)throw 0;
     }catch(e){
-      out.innerHTML='<p class="er">Isdiiwaangelintu ma shaqayn. Internet-ka hubi oo isku day mar kale.</p>';return;
+      out.innerHTML='<p class="er">'+t('regFail')+'</p>';return;
     }
   }
   safeSet('kalluumeysi_registered_phone',phone);
   safeSet('kalluumeysi_user',JSON.stringify({name,phone,pinHash:ph,started:Date.now()}));
   track('register',{phone:phone});
-  out.innerHTML='<div class="ok"><b>✅ Waad isdiiwaangelisay!</b><p style="margin:6px 0 0">Ku soo dhowow '+esc(name)+'. 3-da bilood bilaashka ah hadda ayay bilaabmeen.</p></div>';
+  out.innerHTML='<div class="ok"><b>'+t('regOk')+'</b><p style="margin:6px 0 0">'+t('regOkSub',{name:esc(name)})+'</p></div>';
   loadAccount();
   setTimeout(()=>{closeModal();window.scrollTo({top:0,behavior:'smooth'})},1500);
 }
 function showLogin(){
-  $('mtitle').textContent='🔐 Geli Akoonka';
-  $('mcontent').innerHTML='<input id="loginPhone" placeholder="Lambarka telefoonka" inputmode="tel"><input id="loginPin" type="password" placeholder="PIN-kaaga" inputmode="numeric" maxlength="6"><button class="primary" onclick="loginUser()">Geli</button><div id="loginResult"></div>';
+  $('mtitle').textContent=t('loginTitle');
+  $('mcontent').innerHTML='<input id="loginPhone" placeholder="'+esc(t('pPhone'))+'" inputmode="tel"><input id="loginPin" type="password" placeholder="'+esc(t('pPinLogin'))+'" inputmode="numeric" maxlength="6"><button class="primary" onclick="loginUser()">'+t('loginGo')+'</button><div id="loginResult"></div>';
 }
 async function loginUser(){
   const phone=normalizePhone($('loginPhone').value), pin=$('loginPin').value, out=$('loginResult');
@@ -468,27 +797,27 @@ async function loginUser(){
       const j=await r.json();
       if(Array.isArray(j)&&j.length){
         safeSet('kalluumeysi_user',JSON.stringify({name:j[0].name,phone:phone,pinHash:h,started:new Date(j[0].started_at).getTime()}));
-        out.innerHTML='<div class="ok"><b>✅ Waad gashay.</b></div>';loadAccount();setTimeout(()=>{closeModal();window.scrollTo({top:0,behavior:'smooth'})},900);return;
+        out.innerHTML='<div class="ok"><b>'+t('loggedIn')+'</b></div>';loadAccount();setTimeout(()=>{closeModal();window.scrollTo({top:0,behavior:'smooth'})},900);return;
       }
     }catch(e){}
   }
   if(s&&s.phone===phone&&s.pinHash&&s.pinHash===await hashPin(pin,phone)){
-    out.innerHTML='<div class="ok"><b>✅ Waad gashay.</b></div>'; loadAccount();
+    out.innerHTML='<div class="ok"><b>'+t('loggedIn')+'</b></div>'; loadAccount();
     setTimeout(()=>{closeModal();window.scrollTo({top:0,behavior:'smooth'})},900);
   }else{
-    out.innerHTML='<p class="er">Number ama PIN waa khalad.</p>';
+    out.innerHTML='<p class="er">'+t('loginBad')+'</p>';
   }
 }
 
 /* ---------- EVCPlus ---------- */
 function prepareEVC(){
   const phone=$('payPhone').value.replace(/\D/g,''), out=$('payResult');
-  if(phone.length<8){out.innerHTML='<p class="er">Fadlan geli lambarka EVCPlus si sax ah.</p>';return}
+  if(phone.length<8){out.innerHTML='<p class="er">'+t('evcBad')+'</p>';return}
   track('pay_click',{phone:normalizePhone(phone)});
   const merchant='619235489';
   const code='*712*'+merchant+'*1#';
   $('ussdCode').textContent=code;
-  out.innerHTML='<div class="ok"><b>📱 Code-ka waa diyaar.</b><p>Riix badhanka hoose. Haddii uusan furmin, code-ka gacanta ku garaac qaybta telefoonka.</p><button class="primary" onclick="openUSSD(\''+code+'\')">Fur qaybta telefoonka</button></div>';
+  out.innerHTML='<div class="ok"><b>'+t('codeReady')+'</b><p>'+t('codeSub')+'</p><button class="primary" onclick="openUSSD(\''+code+'\')">'+t('openDialer')+'</button></div>';
 }
 function openUSSD(code){
   // '#' waa in loo beddelaa %23 si telefoonku u aqoonsado
@@ -527,9 +856,13 @@ if('serviceWorker' in navigator){
 window.addEventListener('load',()=>{if(!isStandalone)setTimeout(showInstall,2500)});
 
 /* ---------- Bilow ---------- */
+applyLang();buildLocations();renderBoats();renderDist();loadAccount();
 window.addEventListener('load',()=>{
-  const v=safeGet('k_goob'); if(v&&LOC[v])$('locationSelect').value=v;
-  renderBoats(); loadAccount(); loadData(); track('visit');
+  const v=safeGet('k_goob');
+  if(v==='__gps__'){
+    try{const g=JSON.parse(safeGet('k_gps')||'null');if(Array.isArray(g)&&g.length===2){LOC.__gps__=g;$('locationSelect').value='__gps__'}}catch(e){}
+  }else if(v&&LOC[v])$('locationSelect').value=v;
+  loadAccount(); loadData(); track('visit');
   /* App-ka laga furay shaashadda guriga (installed) */
   if(isStandalone)track('app_open');
 });
