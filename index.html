@@ -101,7 +101,6 @@ footer{text-align:center;padding:26px 14px;color:var(--mut);font-size:13px}
   <button onclick="go('saadaal')">📅 Saadaasha</button>
   <button onclick="go('goob')">📍 Goobta</button>
   <button onclick="go('akoon')">👤 Akoon</button>
-  <button id="navPremium" onclick="go('premium')">💚 Premium</button>
 </nav>
 
 <main>
@@ -182,52 +181,6 @@ footer{text-align:center;padding:26px 14px;color:var(--mut);font-size:13px}
 <section id="akoon" class="card">
   <h2>👤 Akoonkayga</h2>
   <div id="accountStatus">Weli ma lihid akoon. Riix “Isdiiwaangeli bilaash” si aad u bilowdo.</div>
-</section>
-
-<section id="premium" class="card">
-  <h2>💚 Premium Kalluumeysato</h2>
-  <p>Digniino toos ah, xog faahfaahsan iyo warbixinno kalluumeysi.</p>
-  <div class="price">$1 / bil</div>
-  <p><small>Lacagta waxaa lagu bixiyaa EVCPlus.</small></p>
-  <button class="primary" onclick="openModal('pay')">💳 Ku bixi EVCPlus</button>
-</section>
-
-<section class="card ad" id="adCard" style="padding:0;overflow:hidden">
-  <svg viewBox="0 0 600 260" role="img" aria-label="Doon kalluumeysi iyo kalluun badda ku jira" style="display:block;width:100%;height:auto">
-    <defs>
-      <linearGradient id="adSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset=".55" stop-color="#ffb26b"/><stop offset="1" stop-color="#ff8f6b"/></linearGradient>
-      <linearGradient id="adSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0aa0a0"/><stop offset="1" stop-color="#055a73"/></linearGradient>
-    </defs>
-    <rect width="600" height="260" fill="url(#adSky)"/>
-    <circle cx="470" cy="105" r="42" fill="#fff3c4" opacity=".95"/>
-    <rect y="140" width="600" height="120" fill="url(#adSea)"/>
-    <path d="M0 150 Q40 138 80 150 T160 150 T240 150 T320 150 T400 150 T480 150 T560 150 T640 150 V170 H0Z" fill="#0c8f98" opacity=".7"/>
-    <path d="M0 185 Q50 173 100 185 T200 185 T300 185 T400 185 T500 185 T600 185 V260 H0Z" fill="#067a8c" opacity=".8"/>
-    <!-- doon -->
-    <g transform="translate(150 78)">
-      <path d="M0 62 H190 L165 98 H28Z" fill="#8a3b1f"/>
-      <path d="M0 62 H190" stroke="#f5e6c8" stroke-width="6"/>
-      <rect x="92" y="6" width="5" height="56" fill="#4b2a14"/>
-      <path d="M97 8 L97 54 L150 54Z" fill="#fff"/>
-      <path d="M92 14 L92 54 L52 54Z" fill="#ffe29a"/>
-      <circle cx="60" cy="80" r="5" fill="#f5e6c8"/><circle cx="95" cy="80" r="5" fill="#f5e6c8"/><circle cx="130" cy="80" r="5" fill="#f5e6c8"/>
-    </g>
-    <!-- kalluun -->
-    <g transform="translate(400 195)" fill="#ffd27a">
-      <ellipse cx="0" cy="0" rx="34" ry="16"/><path d="M30 0 L56 -14 L56 14Z"/><circle cx="-18" cy="-4" r="3" fill="#055a73"/>
-    </g>
-    <g transform="translate(90 215) scale(.7)" fill="#fff" opacity=".9">
-      <ellipse cx="0" cy="0" rx="34" ry="16"/><path d="M30 0 L56 -14 L56 14Z"/><circle cx="-18" cy="-4" r="3" fill="#055a73"/>
-    </g>
-  </svg>
-  <div style="padding:18px">
-    <small style="color:#b36b00;font-weight:800;letter-spacing:.5px">📢 TUSAALE XAYEYSIIS</small>
-    <h3 style="margin:6px 0 8px;font-size:21px">Qalabka kalluumeysiga meel keliya ka hel!</h3>
-    <p style="margin:0 0 6px">Shabagyo, jillaab, saliid, mashiinno doon iyo wax kasta oo badda looga baahan yahay — qiimo fiican, alaabo tayo leh.</p>
-    <p style="margin:12px 0 4px"><b>Ma rabtaa in ganacsigaaga lagu xayeysiiyo halkan?</b></p>
-    <p style="margin:0 0 12px" class="mut">Wac lambarkan:</p>
-    <a href="tel:0619235489" class="primary" style="display:block;text-decoration:none;text-align:center;padding:15px;border-radius:13px;background:var(--pri);color:#fff;font-size:18px;font-weight:800" onclick="try{track('ad_call')}catch(e){}">📞 0619235489</a>
-  </div>
 </section>
 
 </main>
@@ -419,15 +372,11 @@ async function hashPin(pin,phone){
   }catch(e){return btoa(phone+pin)}
 }
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-/* Qofka diiwaangashan: kaarka bilaashka waa la qariyaa, akoonka waa kor loo qaadaa,
-   Premium wuxuu muuqdaa kaliya marka bilaashku dhow yahay inuu dhammaado (<=7 maalmood) ama dhammaaday. */
+/* Qofka diiwaangashan: kaarka bilaashka waa la qariyaa, akoonka waa kor loo qaadaa. */
 function applyAccountLayout(state,days){
   const reg=state!=='none';
   $('freeCard').style.display=reg?'none':'';
   if(reg)document.querySelector('main').prepend($('akoon'));
-  const showPrem=!reg||state==='expired'||days<=7;
-  $('premium').style.display=showPrem?'':'none';
-  $('navPremium').style.display=showPrem?'':'none';
 }
 function loadAccount(){
   const u=safeGet('kalluumeysi_user'); const el=$('accountStatus');
@@ -438,10 +387,10 @@ function loadAccount(){
     const rem=exp.getTime()-Date.now();
     if(rem>0){
       const d=Math.ceil(rem/86400000);
-      el.innerHTML='<div class="ok"><b>👋 Ku soo dhowow '+esc(x.name)+'</b><p style="margin:6px 0 0">3-da bilood ee bilaashka ah way kuu socdaan.</p><p style="margin:4px 0 0">Waqti ka haray: <b>'+d+' maalmood</b></p>'+(d<=7?'<p style="margin:6px 0 0"><b>⏳ Waxay dhowdahay inay dhammaadaan.</b> Dooro Premium si aadan u joojin.</p>':'')+'</div><button class="ghost" style="width:100%;margin-top:10px" onclick="openModal(\'pay\')">💚 Ku bixi Premium hore</button>';
+      el.innerHTML='<div class="ok"><b>👋 Ku soo dhowow '+esc(x.name)+'</b><p style="margin:6px 0 0">3-da bilood ee bilaashka ah way kuu socdaan.</p><p style="margin:4px 0 0">Waqti ka haray: <b>'+d+' maalmood</b></p>'+'</div>';
       applyAccountLayout('active',d);
     }else{
-      el.innerHTML='<div class="wr"><b>🔒 3-da bilood bilaashka ah way dhammaadeen.</b><p style="margin:6px 0 0">Dooro Premium si aad adeegga u sii isticmaasho.</p></div>';
+      el.innerHTML='<div class="wr"><b>3-da bilood bilaashka ah way dhammaadeen.</b></div>';
       applyAccountLayout('expired',0);
     }
   }catch(e){applyAccountLayout('none');}
@@ -450,40 +399,14 @@ function openModal(type){
   $('modal').style.display='flex'; const c=$('mcontent');
   if(type==='register'){
     $('mtitle').textContent='🎁 Isdiiwaangeli';
-    const cityOpts=Object.keys(LOC).map(k=>'<option value="'+k+'">').join('');
-    c.innerHTML='<p>Ku bilow <b>3 bilood oo bilaash ah</b>.</p><p style="font-size:12px;color:#5d7480">Macluumaadkaaga waxaa loo isticmaalaa akoonkaaga iyo adeegga kaliya.</p>'
-      +'<input id="regName" placeholder="Magacaaga" autocomplete="name">'
-      +'<input id="regPhone" placeholder="Lambarka telefoonka" inputmode="tel">'
-      +'<input id="regCity" list="cityList" placeholder="Magaalada / deegaanka aad joogto" value="'+esc($('locationSelect').value)+'"><datalist id="cityList">'+cityOpts+'</datalist>'
-      +'<label style="display:block;font-weight:700;margin:10px 0 4px">Ma tahay kalluumeysato?</label>'
-      +'<select id="regFisher" onchange="updateRoles()"><option value="">Dooro…</option><option value="yes">Haa</option><option value="no">Maya</option></select>'
-      +'<div id="roleWrap" style="display:none"><label id="roleLabel" style="display:block;font-weight:700;margin:10px 0 4px"></label><select id="regRole"></select></div>'
-      +'<input id="regPin" type="password" placeholder="PIN (4–6 lambar)" inputmode="numeric" maxlength="6" style="margin-top:12px"><input id="regPin2" type="password" placeholder="Ku celi PIN-ka" inputmode="numeric" maxlength="6"><button class="primary" onclick="registerUser()">Isdiiwaangeli oo Bilow</button><div id="regResult"></div>';
-  }else if(type==='login'){
-    showLogin();
+    c.innerHTML='<p>Ku bilow <b>3 bilood oo bilaash ah</b>.</p><p style="font-size:12px;color:#5d7480">Magacaaga iyo lambarkaaga waxaa loo isticmaalaa akoonkaaga iyo adeegga kaliya.</p><input id="regName" placeholder="Magacaaga" autocomplete="name"><input id="regPhone" placeholder="Lambarka telefoonka" inputmode="tel"><input id="regPin" type="password" placeholder="PIN (4–6 lambar)" inputmode="numeric" maxlength="6"><input id="regPin2" type="password" placeholder="Ku celi PIN-ka" inputmode="numeric" maxlength="6"><button class="primary" onclick="registerUser()">Isdiiwaangeli oo Bilow</button><div id="regResult"></div>';
   }else{
-    $('mtitle').textContent='💚 Ku Bixi EVCPlus';
-    c.innerHTML='<p>Lacagta Premium: <b>$1 / bil</b></p><input id="payPhone" placeholder="Lambarka EVCPlus-kaaga" inputmode="tel"><div class="ussd" id="ussdCode">*712*619235489*1#</div><button class="primary" onclick="prepareEVC()">📱 Ku bixi $1 — EVCPlus</button><div id="payResult"></div>';
+    showLogin();
   }
-}
-function updateRoles(){
-  const f=$('regFisher').value, wrap=$('roleWrap'), sel=$('regRole');
-  if(!f){wrap.style.display='none';sel.innerHTML='';return}
-  const opts=f==='yes'
-    ?[['catch','Soo dabta kalluunka'],['sell','Iibisa kalluunka'],['both','Labadaba']]
-    :[['buyer','Iibsade'],['trader','Ganacsade'],['other','Qof kale']];
-  $('roleLabel').textContent=f==='yes'?'Maxaad qabataa?':'Doorkaaga maxuu yahay?';
-  sel.innerHTML='<option value="">Dooro…</option>'+opts.map(o=>'<option value="'+o[0]+'">'+o[1]+'</option>').join('');
-  wrap.style.display='block';
 }
 async function registerUser(){
   const name=$('regName').value.trim(), phone=normalizePhone($('regPhone').value);
   const pin=$('regPin').value.trim(), pin2=$('regPin2').value.trim(), out=$('regResult');
-  const city=$('regCity').value.trim(), fisher=$('regFisher').value, role=$('regRole').value;
-  if(!city||!fisher||!role){
-    out.innerHTML='<p class="er">Fadlan geli magaalada/deegaanka, dooro haddii aad kalluumeysato tahay, kadibna dooro doorkaaga.</p>';return;
-  }
-  const is_fisher=fisher==='yes';
   if(!name||phone.length<9||!/^\d{4,6}$/.test(pin)||pin!==pin2){
     out.innerHTML='<p class="er">Fadlan geli magaca, number sax ah iyo PIN 4–6 lambar ah; labada PIN waa inay isku mid noqdaan.</p>';return;
   }
@@ -493,9 +416,7 @@ async function registerUser(){
   const ph=await hashPin(pin,phone);
   if(BACKEND){
     try{
-      let r=await sb('users',{name:name,phone:phone,pin_hash:ph,city:city,is_fisher:is_fisher,role:role});
-      /* Haddii tiirarka cusub weli lagu darin Supabase (400), isku day iyadoon la helin — diiwaangelintu ha joogsan */
-      if(r.status===400)r=await sb('users',{name:name,phone:phone,pin_hash:ph});
+      const r=await sb('users',{name:name,phone:phone,pin_hash:ph});
       if(r.status===409){
         out.innerHTML='<div class="wr"><b>⚠️ Number-kan hore ayaa loo diiwaangeliyay.</b><p>3-da bilood bilaashka ah mar labaad laguma bilaabi karo.</p><button class="primary" onclick="showLogin()">Geli Akoonka Hore</button></div>';return;
       }
@@ -505,7 +426,7 @@ async function registerUser(){
     }
   }
   safeSet('kalluumeysi_registered_phone',phone);
-  safeSet('kalluumeysi_user',JSON.stringify({name,phone,city,is_fisher,role,pinHash:ph,started:Date.now()}));
+  safeSet('kalluumeysi_user',JSON.stringify({name,phone,pinHash:ph,started:Date.now()}));
   track('register',{phone:phone});
   out.innerHTML='<div class="ok"><b>✅ Waad isdiiwaangelisay!</b><p style="margin:6px 0 0">Ku soo dhowow '+esc(name)+'. 3-da bilood bilaashka ah hadda ayay bilaabmeen.</p></div>';
   loadAccount();
@@ -537,22 +458,6 @@ async function loginUser(){
   }
 }
 
-/* ---------- EVCPlus ---------- */
-function prepareEVC(){
-  const phone=$('payPhone').value.replace(/\D/g,''), out=$('payResult');
-  if(phone.length<8){out.innerHTML='<p class="er">Fadlan geli lambarka EVCPlus si sax ah.</p>';return}
-  /* Tani waa isku day kaliya — MA aha lacag la helay. Lacagta waxaa la xaqiijiyaa gacanta (admin) marka SMS-ka EVCPlus soo galo. */
-  track('pay_intent',{phone:normalizePhone(phone)});
-  const merchant='619235489';
-  const code='*712*'+merchant+'*1#';
-  $('ussdCode').textContent=code;
-  out.innerHTML='<div class="ok"><b>📱 Qaybta telefoonka ayaa furmaysa…</b><p style="margin:6px 0 0">Code-ka <b>'+code+'</b> ayaa ku qoran. Riix <b>Wac</b>, geli PIN-kaaga EVCPlus, kadibna lacagta way gaarysaa.</p><p style="margin:6px 0 0"><small>Haddii uusan furmin, riix badhanka hoose ama code-ka gacanta ku garaac.</small></p><button class="ghost" style="width:100%;margin-top:8px" onclick="openUSSD(\''+code+'\')">Mar kale fur qaybta telefoonka</button></div>';
-  openUSSD(code);
-}
-function openUSSD(code){
-  // '#' waa in loo beddelaa %23 si telefoonku u aqoonsado
-  location.href='tel:'+code.replace(/#/g,'%23');
-}
 function closeModal(){$('modal').style.display='none'}
 
 /* ---------- Ku dar shaashadda (PWA) ---------- */
