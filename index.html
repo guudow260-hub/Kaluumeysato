@@ -172,8 +172,8 @@ footer{text-align:center;padding:26px 14px;color:var(--mut);font-size:13px}
 </section>
 
 <section id="freeCard" class="card free">
-  <h2>🎁 3 BILOOD OO BILAASH AH</h2>
-  <p>Isdiiwaangeli oo isticmaal adeegga kalluumeysiga 3 bilood oo bilaash ah.</p>
+  <h2>🎁 AKOON BILAASH AH</h2>
+  <p>Isdiiwaangeli oo samee akoon bilaash ah.</p>
   <button class="primary" onclick="openModal('register')">Isdiiwaangeli bilaash</button>
   <button class="ghost" style="width:100%;margin-top:8px" onclick="openModal('login')">Horey ma u diiwaangashanayd? Soo gal</button>
 </section>
@@ -383,23 +383,15 @@ function loadAccount(){
   if(!u){applyAccountLayout('none');return;}
   try{
     const x=JSON.parse(u);
-    const exp=new Date(x.started); exp.setMonth(exp.getMonth()+3);
-    const rem=exp.getTime()-Date.now();
-    if(rem>0){
-      const d=Math.ceil(rem/86400000);
-      el.innerHTML='<div class="ok"><b>👋 Ku soo dhowow '+esc(x.name)+'</b><p style="margin:6px 0 0">3-da bilood ee bilaashka ah way kuu socdaan.</p><p style="margin:4px 0 0">Waqti ka haray: <b>'+d+' maalmood</b></p>'+'</div>';
-      applyAccountLayout('active',d);
-    }else{
-      el.innerHTML='<div class="wr"><b>3-da bilood bilaashka ah way dhammaadeen.</b></div>';
-      applyAccountLayout('expired',0);
-    }
+    el.innerHTML='<div class="ok"><b>👋 Ku soo dhowow '+esc(x.name)+'</b><p style="margin:6px 0 0">Akoonkaaga bilaashka ah wuu shaqaynayaa.</p></div>';
+    applyAccountLayout('active',0);
   }catch(e){applyAccountLayout('none');}
 }
 function openModal(type){
   $('modal').style.display='flex'; const c=$('mcontent');
   if(type==='register'){
     $('mtitle').textContent='🎁 Isdiiwaangeli';
-    c.innerHTML='<p>Ku bilow <b>3 bilood oo bilaash ah</b>.</p><p style="font-size:12px;color:#5d7480">Magacaaga iyo lambarkaaga waxaa loo isticmaalaa akoonkaaga iyo adeegga kaliya.</p><input id="regName" placeholder="Magacaaga" autocomplete="name"><input id="regPhone" placeholder="Lambarka telefoonka" inputmode="tel"><input id="regPin" type="password" placeholder="PIN (4–6 lambar)" inputmode="numeric" maxlength="6"><input id="regPin2" type="password" placeholder="Ku celi PIN-ka" inputmode="numeric" maxlength="6"><button class="primary" onclick="registerUser()">Isdiiwaangeli oo Bilow</button><div id="regResult"></div>';
+    c.innerHTML='<p>Samee akoon <b>bilaash ah</b>.</p><p style="font-size:12px;color:#5d7480">Magacaaga iyo lambarkaaga waxaa loo isticmaalaa akoonkaaga iyo adeegga kaliya.</p><input id="regName" placeholder="Magacaaga" autocomplete="name"><input id="regPhone" placeholder="Lambarka telefoonka" inputmode="tel"><input id="regPin" type="password" placeholder="PIN (4–6 lambar)" inputmode="numeric" maxlength="6"><input id="regPin2" type="password" placeholder="Ku celi PIN-ka" inputmode="numeric" maxlength="6"><button class="primary" onclick="registerUser()">Isdiiwaangeli oo Bilow</button><div id="regResult"></div>';
   }else{
     showLogin();
   }
@@ -411,14 +403,14 @@ async function registerUser(){
     out.innerHTML='<p class="er">Fadlan geli magaca, number sax ah iyo PIN 4–6 lambar ah; labada PIN waa inay isku mid noqdaan.</p>';return;
   }
   if(safeGet('kalluumeysi_registered_phone')===phone){
-    out.innerHTML='<div class="wr"><b>⚠️ Number-kan hore ayaa loo diiwaangeliyay.</b><p>Number: ******'+phone.slice(-4)+'</p><p>3-da bilood bilaashka ah mar labaad laguma bilaabi karo.</p><button class="primary" onclick="showLogin()">Geli Akoonka Hore</button></div>';return;
+    out.innerHTML='<div class="wr"><b>⚠️ Number-kan hore ayaa loo diiwaangeliyay.</b><p>Number: ******'+phone.slice(-4)+'</p><button class="primary" onclick="showLogin()">Geli Akoonka Hore</button></div>';return;
   }
   const ph=await hashPin(pin,phone);
   if(BACKEND){
     try{
       const r=await sb('users',{name:name,phone:phone,pin_hash:ph});
       if(r.status===409){
-        out.innerHTML='<div class="wr"><b>⚠️ Number-kan hore ayaa loo diiwaangeliyay.</b><p>3-da bilood bilaashka ah mar labaad laguma bilaabi karo.</p><button class="primary" onclick="showLogin()">Geli Akoonka Hore</button></div>';return;
+        out.innerHTML='<div class="wr"><b>⚠️ Number-kan hore ayaa loo diiwaangeliyay.</b><button class="primary" onclick="showLogin()">Geli Akoonka Hore</button></div>';return;
       }
       if(!r.ok)throw 0;
     }catch(e){
@@ -428,7 +420,7 @@ async function registerUser(){
   safeSet('kalluumeysi_registered_phone',phone);
   safeSet('kalluumeysi_user',JSON.stringify({name,phone,pinHash:ph,started:Date.now()}));
   track('register',{phone:phone});
-  out.innerHTML='<div class="ok"><b>✅ Waad isdiiwaangelisay!</b><p style="margin:6px 0 0">Ku soo dhowow '+esc(name)+'. 3-da bilood bilaashka ah hadda ayay bilaabmeen.</p></div>';
+  out.innerHTML='<div class="ok"><b>✅ Waad isdiiwaangelisay!</b><p style="margin:6px 0 0">Ku soo dhowow '+esc(name)+'. Akoonkaaga waa diyaar.</p></div>';
   loadAccount();
   setTimeout(()=>{closeModal();window.scrollTo({top:0,behavior:'smooth'})},1500);
 }

@@ -112,7 +112,6 @@ async function load(){
   if(u.error||e.error){alert('Xogta lama helin: '+(u.error||e.error).message);return}
   U=u.data;E=e.data;render();
 }
-function daysLeft(s){const x=new Date(s);x.setMonth(x.getMonth()+3);return Math.ceil((x-Date.now())/86400000)}
 function fmt(d){return new Date(d).toLocaleString('so',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}
 function render(){
   const t0=new Date();t0.setHours(0,0,0,0);
@@ -120,7 +119,6 @@ function render(){
   const uniqToday=new Set(today.map(x=>x.visitor_id)).size;
   const uniqAll=new Set(E.filter(x=>x.type==='visit').map(x=>x.visitor_id)).size;
   const newToday=U.filter(x=>new Date(x.started_at)>=t0).length;
-  const active=U.filter(x=>daysLeft(x.started_at)>0).length;
   // Tirakoobka 4-ta muhiimka ah
   // App-ka: qof gaar ah oo lahaa dhacdo install/app_open
   const inst=new Set(E.filter(x=>x.type==='install'||x.type==='app_open').map(x=>x.visitor_id));
@@ -133,8 +131,7 @@ function render(){
   const instToday=new Set(E.filter(x=>x.type==='install'&&new Date(x.created_at)>=t0).map(x=>x.visitor_id)).size;
   const openToday=new Set(E.filter(x=>x.type==='app_open'&&new Date(x.created_at)>=t0).map(x=>x.visitor_id)).size;
   const S=[['📲 App-ka dejiyey (wadar)',inst.size],['📲 Dejiyey maanta',instToday],['📱 App-ka ka furay maanta',openToday],['Dad gaar ah wadar',uniqAll],
-    ['Booqasho maanta',today.length],['Dad gaar ah maanta',uniqToday],['Isdiiwaangelin wadar',U.length],['Isdiiwaangelin maanta',newToday],
-    ['Bilaashka wali socda',active],['Bilaashku dhammaaday',U.length-active]];
+    ['Booqasho maanta',today.length],['Dad gaar ah maanta',uniqToday],['Isdiiwaangelin wadar',U.length],['Isdiiwaangelin maanta',newToday]];
   $('stats').innerHTML=S.map(s=>'<div class="stat"><span>'+s[0]+'</span><b>'+s[1]+'</b></div>').join('');
   renderUsers();
   // goobaha
@@ -150,12 +147,12 @@ function device(ua){ua=ua||'';return /Android/i.test(ua)?'Android':/iPhone|iPad/
 function renderUsers(){
   const q=$('q').value.trim().toLowerCase();
   const rows=U.filter(u=>!q||u.name.toLowerCase().includes(q)||u.phone.includes(q));
-  $('users').innerHTML='<tr><th>Magac</th><th>Lambar</th><th>Bilaabay</th><th>Hadhay</th></tr>'+
-    rows.map(u=>{const d=daysLeft(u.started_at),ph=esc(u.phone);
-      return '<tr><td>'+esc(u.name)+'</td><td><a href="tel:+252'+ph+'">'+ph+'</a></td><td>'+fmt(u.started_at)+'</td><td class="'+(d>0?'on':'off')+'">'+(d>0?d+' maalin':'Dhammaaday')+'</td></tr>'}).join('');
+  $('users').innerHTML='<tr><th>Magac</th><th>Lambar</th><th>Bilaabay</th></tr>'+
+    rows.map(u=>{const ph=esc(u.phone);
+      return '<tr><td>'+esc(u.name)+'</td><td><a href="tel:+252'+ph+'">'+ph+'</a></td><td>'+fmt(u.started_at)+'</td></tr>'}).join('');
 }
 function csv(){
-  const l=[['Magac','Lambar','Bilaabay','Maalmo hadhay','Magaalo','Kalluumeysato','Door']].concat(U.map(u=>[u.name,u.phone,u.started_at,Math.max(0,daysLeft(u.started_at)),u.city||'',u.is_fisher===true?'Haa':u.is_fisher===false?'Maya':'',u.role||'']));
+  const l=[['Magac','Lambar','Bilaabay','Magaalo','Kalluumeysato','Door']].concat(U.map(u=>[u.name,u.phone,u.started_at,u.city||'',u.is_fisher===true?'Haa':u.is_fisher===false?'Maya':'',u.role||'']));
   const t=l.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+t],{type:'text/csv'}));a.download='isticmaalayaasha.csv';a.click();
 }
